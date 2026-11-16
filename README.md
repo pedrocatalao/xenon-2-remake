@@ -10,7 +10,7 @@ This project brings it back with love and respect: a faithful remake for modern 
 
 ## Play online
 
-**[Play Xenon 2 Megablast remake in the browser](https://vpapanik.github.io/xenon-2-remake/)**: click the game once so it gets the keyboard, then use the arrows and Space.
+### [Play Xenon 2 Megablast remake in the browser](https://vpapanik.github.io/xenon-2-remake/)
 
 ## Download
 
