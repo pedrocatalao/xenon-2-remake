@@ -1,16 +1,16 @@
-# Xenon 2 Megablast remake
+# Xenon 2: Megablast remake
 
-![Xenon 2 Megablast remake](images/poster.png)
+![Xenon 2: Megablast remake](images/poster.png)
 
-A tribute to the legendary **Bitmap Brothers**.
+A tribute to the legendary **[Bitmap Brothers](https://en.wikipedia.org/wiki/The_Bitmap_Brothers)**.
 
-In 1989 **Xenon 2 Megablast** arrived on the Amiga and the PC and changed what a shoot-'em-up could look and sound like: hand-crafted metallic graphics full of detail, organic levels that seemed alive, a shop where you traded with a grinning alien, and Bomb the Bass's *Megablast* pumping out of a home computer. It was a programming miracle of its era, smooth, fast and beautiful on machines with a fraction of the power of a phone today, and it is still remembered as one of the great games of the 16-bit years.
+In 1989 **[Xenon 2: Megablast](https://en.wikipedia.org/wiki/Xenon_2:_Megablast)** arrived on the Amiga and the PC and changed what a shoot-'em-up could look and sound like: hand-crafted metallic graphics full of detail, organic levels that seemed alive, a shop where you traded with a grinning alien, and Bomb the Bass's *Megablast* pumping out of a home computer. It was a programming miracle of its era, smooth, fast and beautiful on machines with a fraction of the power of a phone today, and it is still remembered as one of the great games of the 16-bit years.
 
 This project brings it back with love and respect: a faithful remake for modern computers, made with Godot, that plays exactly as the original did, together with an **ENHANCED** edition that brings the game to high resolution screens.
 
 ## Play online
 
-### [Play Xenon 2 Megablast remake in the browser](https://vpapanik.github.io/xenon-2-remake/)
+### [Play Xenon 2: Megablast remake in the browser](https://vpapanik.github.io/xenon-2-remake/)
 
 ## Download
 
@@ -77,10 +77,10 @@ Open the folder in **Godot 4.7.2** (standard build) and run it, or export it fro
 
 ## Credits
 
-- Xenon 2 Megablast: The Bitmap Brothers, published by Image Works (1989).
+- [Xenon 2: Megablast](https://en.wikipedia.org/wiki/Xenon_2:_Megablast) by [The Bitmap Brothers](https://en.wikipedia.org/wiki/The_Bitmap_Brothers), published by Image Works (1989).
 - Music: Bomb the Bass, adapted by David Whittaker.
 - Remake by vpapanik.
 
 ## Disclaimer
 
-This is a free, non-commercial fan project, made out of love for the original game. It is not affiliated with, endorsed by or connected in any way to The Bitmap Brothers, Image Works, Mirrorsoft, Bomb the Bass, David Whittaker or any current owner of Xenon 2 Megablast. All names, trademarks, graphics, music and other material of the original game belong to their respective owners. Nothing here is for sale.
+This is a free, non-commercial fan project, made out of love for the original game. It is not affiliated with, endorsed by or connected in any way to The Bitmap Brothers, Image Works, Mirrorsoft, Bomb the Bass, David Whittaker or any current owner of Xenon 2: Megablast. All names, trademarks, graphics, music and other material of the original game belong to their respective owners. Nothing here is for sale.
