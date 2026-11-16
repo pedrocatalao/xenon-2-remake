@@ -6,7 +6,7 @@ A tribute to the legendary **[Bitmap Brothers](https://en.wikipedia.org/wiki/The
 
 In 1989 **[Xenon 2: Megablast](https://en.wikipedia.org/wiki/Xenon_2:_Megablast)** arrived on the Amiga and the PC and changed what a shoot-'em-up could look and sound like: hand-crafted metallic graphics full of detail, organic levels that seemed alive, a shop where you traded with a grinning alien, and [Bomb the Bass](https://en.wikipedia.org/wiki/Bomb_the_Bass)'s *Megablast* pumping out of a home computer. It was a programming miracle of its era, smooth, fast and beautiful on machines with a fraction of the power of a phone today, and it is still remembered as one of the great games of the 16-bit years.
 
-This project brings it back with love and respect: a faithful remake for modern computers, made with Godot, that plays exactly as the original did, together with an **ENHANCED** edition that brings the game to high resolution screens.
+This project brings it back with love and respect: a faithful remake for modern computers, made with [Godot](https://godotengine.org/), that plays exactly as the original did, together with an **ENHANCED** edition that brings the game to high resolution screens.
 
 ## Play online
 
@@ -58,7 +58,7 @@ The game mechanics of the original Amiga and PC versions of Xenon 2 are identica
 
 ## Building
 
-Open the folder in **Godot 4.7.2** (standard build) and run it, or export it from *Project > Export* for Windows, Linux or the Web. Ready builds are on the [Releases](https://github.com/vpapanik/xenon-2-remake/releases) page.
+Open the folder in **[Godot 4.7.2](https://godotengine.org/download/)** (standard build) and run it, or export it from *Project > Export* for Windows, Linux or the Web. Ready builds are on the [Releases](https://github.com/vpapanik/xenon-2-remake/releases) page.
 
 ## Controls
 
