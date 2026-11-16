@@ -867,13 +867,12 @@ var lives := 3
 var energy := 39
 var credits := 0
 
-# code 0x3db4 : with the cheat enabled, the I key (scancode 0x17) toggles ds:0x8f56, which
-# stops all damage in 0x3c4f (a crush by the ground still kills)
+# ds:0x8f56 stops all damage in 0x3c4f (a crush by the ground still kills). The original's
+# cheat (F7 in the display mode menu, 0x652, then the I key, 0x3db4) is not in the remake :
+# only the test option sets it.
 
-var cheat_enabled := false
 var invulnerable := false
 var test_full := false
-var held_cheat := false
 
 # ENHANCED (remake only) : F1 switches at once between ORIGINAL and ENHANCED (--enhanced
 # starts in ENHANCED, for tests). In ENHANCED the pictures drawn in play come from assets_hd
@@ -909,10 +908,8 @@ func _ready() -> void:
 			shot_fire = true
 		elif arg == "--cheat":
 
-			# code 0x652 : choosing the display mode with F7 enables the cheat (ds:0x8f57).
-			# Here it also starts switched on.
+			# test option : no damage (ds:0x8f56)
 
-			cheat_enabled = true
 			invulnerable = true
 		elif arg.begins_with("--scroll="):
 
@@ -1646,12 +1643,6 @@ func _read_input() -> void:
 	held_down = Input.is_action_pressed("ui_down") or Input.is_physical_key_pressed(KEY_KP_2) or Input.is_physical_key_pressed(KEY_KP_5) or _custom_held("down")
 	held_left = Input.is_action_pressed("ui_left") or Input.is_physical_key_pressed(KEY_KP_4) or _custom_held("left")
 	held_right = Input.is_action_pressed("ui_right") or Input.is_physical_key_pressed(KEY_KP_6) or _custom_held("right")
-	var cheat_key := Input.is_physical_key_pressed(KEY_I)
-
-	if cheat_key and not held_cheat and cheat_enabled:
-		invulnerable = not invulnerable
-
-	held_cheat = cheat_key
 
 
 func _tick() -> void:
@@ -3245,7 +3236,7 @@ func _custom_held(action: String) -> bool:
 func _game_keys() -> void:
 
 	# code 0x3d6b : the last key pressed, after the frame's updates, through the table
-	# cs:0x3d8f : P (0x19) pause, Esc (1) the title, Enter (0x1c) dive, I (0x17) the cheat
+	# cs:0x3d8f : P (0x19) pause, Esc (1) the title, Enter (0x1c) dive (I, 0x17, the cheat, left out)
 	# (in _read_input)
 
 	if escape_event:
