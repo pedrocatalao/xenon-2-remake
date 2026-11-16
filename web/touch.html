@@ -1,0 +1,113 @@
+<style>
+#x2touch{position:fixed;inset:0;pointer-events:none;z-index:10;display:none;font-family:sans-serif}
+#x2left{position:absolute;left:0;top:0;width:50%;height:100%;pointer-events:auto;touch-action:none}
+#x2base{position:absolute;width:30vmin;height:30vmin;margin:-15vmin;border-radius:50%;background:rgba(170,160,220,0.18);border:2px solid rgba(220,215,255,0.4);display:none;pointer-events:none}
+#x2knob{position:absolute;left:50%;top:50%;width:13vmin;height:13vmin;margin:-6.5vmin;border-radius:50%;background:rgba(235,230,255,0.45);pointer-events:none}
+#x2touch .b{position:absolute;pointer-events:auto;touch-action:none;user-select:none;-webkit-user-select:none;border-radius:50%;background:rgba(170,160,220,0.22);border:2px solid rgba(220,215,255,0.45);color:rgba(255,255,255,0.8);display:flex;align-items:center;justify-content:center;font-weight:bold}
+#x2touch .b.on{background:rgba(200,190,255,0.55)}
+#x2fire{right:5vmin;bottom:6vmin;width:24vmin;height:24vmin;font-size:5vmin}
+#x2dive{left:50%;bottom:4vmin;width:16vmin;height:16vmin;margin-left:-8vmin;font-size:3.5vmin;display:none !important}
+#x2dive.ready{display:flex !important}
+#x2pause{right:3vmin;top:3vmin;width:10vmin;height:10vmin;font-size:3.5vmin}
+</style>
+<script>
+(function () {
+	// remake : touch controls in the browser, shown on touch screens only. The left half is
+	// a joystick that appears where the thumb lands, FIRE on the right (held, the game's own
+	// autofire), DIVE in the middle while a dive is left (the game tells it through
+	// window.x2dive), P pauses. They send the game the keyboard's keys through the canvas.
+	var touch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+	if (!touch || !window.matchMedia('(pointer: coarse)').matches) return;
+	var KEYS = {ArrowUp: ['ArrowUp', 38], ArrowDown: ['ArrowDown', 40], ArrowLeft: ['ArrowLeft', 37], ArrowRight: ['ArrowRight', 39], Space: [' ', 32], Enter: ['Enter', 13], KeyP: ['p', 80]};
+	var down = {};
+	function send(code, on) {
+		if (!!down[code] === on) return;
+		down[code] = on;
+		var canvas = document.getElementById('canvas');
+		if (!canvas) return;
+		var k = KEYS[code];
+		canvas.dispatchEvent(new KeyboardEvent(on ? 'keydown' : 'keyup', {code: code, key: k[0], keyCode: k[1], which: k[1], bubbles: true, cancelable: true}));
+	}
+	function button(el, code) {
+		var id = null;
+		el.addEventListener('touchstart', function (e) {
+			e.preventDefault();
+			if (id !== null) return;
+			id = e.changedTouches[0].identifier;
+			el.classList.add('on');
+			send(code, true);
+		}, {passive: false});
+		function release(e) {
+			e.preventDefault();
+			for (var i = 0; i < e.changedTouches.length; i++) {
+				if (e.changedTouches[i].identifier === id) {
+					id = null;
+					el.classList.remove('on');
+					send(code, false);
+				}
+			}
+		}
+		el.addEventListener('touchend', release, {passive: false});
+		el.addEventListener('touchcancel', release, {passive: false});
+	}
+	function stick(zone, base, knob) {
+		var id = null, cx = 0, cy = 0;
+		function set(dx, dy) {
+			var r = base.clientWidth / 2, d = Math.sqrt(dx * dx + dy * dy), on = d > r * 0.25;
+			var a = Math.atan2(dy, dx) * 180 / Math.PI;
+			send('ArrowRight', on && a > -67.5 && a < 67.5);
+			send('ArrowDown', on && a > 22.5 && a < 157.5);
+			send('ArrowLeft', on && (a > 112.5 || a < -112.5));
+			send('ArrowUp', on && a > -157.5 && a < -22.5);
+			var m = Math.min(d, r * 0.75) / (d || 1);
+			knob.style.transform = 'translate(' + dx * m + 'px,' + dy * m + 'px)';
+		}
+		zone.addEventListener('touchstart', function (e) {
+			e.preventDefault();
+			if (id !== null) return;
+			var t = e.changedTouches[0];
+			id = t.identifier;
+			cx = t.clientX;
+			cy = t.clientY;
+			base.style.left = cx + 'px';
+			base.style.top = cy + 'px';
+			base.style.display = 'block';
+			set(0, 0);
+		}, {passive: false});
+		zone.addEventListener('touchmove', function (e) {
+			e.preventDefault();
+			for (var i = 0; i < e.changedTouches.length; i++) {
+				var t = e.changedTouches[i];
+				if (t.identifier === id) set(t.clientX - cx, t.clientY - cy);
+			}
+		}, {passive: false});
+		function end(e) {
+			e.preventDefault();
+			for (var i = 0; i < e.changedTouches.length; i++) {
+				if (e.changedTouches[i].identifier === id) {
+					id = null;
+					set(0, 0);
+					base.style.display = 'none';
+				}
+			}
+		}
+		zone.addEventListener('touchend', end, {passive: false});
+		zone.addEventListener('touchcancel', end, {passive: false});
+	}
+	window.x2dive = function (n) {
+		var el = document.getElementById('x2dive');
+		if (el) el.classList.toggle('ready', n > 0);
+	};
+	window.addEventListener('DOMContentLoaded', function () {
+		var box = document.createElement('div');
+		box.id = 'x2touch';
+		box.innerHTML = '<div id=x2left></div><div id=x2base><div id=x2knob></div></div><div class=b id=x2dive>DIVE</div><div class=b id=x2fire>FIRE</div><div class=b id=x2pause>P</div>';
+		document.body.appendChild(box);
+		stick(document.getElementById('x2left'), document.getElementById('x2base'), document.getElementById('x2knob'));
+		button(document.getElementById('x2fire'), 'Space');
+		button(document.getElementById('x2dive'), 'Enter');
+		button(document.getElementById('x2pause'), 'KeyP');
+		box.style.display = 'block';
+	});
+})();
+</script>

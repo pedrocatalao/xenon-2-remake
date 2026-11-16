@@ -83,6 +83,8 @@ Open the folder in **[Godot 4.7.2](https://godotengine.org/download/)** (standar
 | F10 | quit |
 | K (on the title menu) | choose your own keys |
 
+On phones and tablets the browser version shows touch controls: a joystick on the left half of the screen, FIRE on the right (hold it for autofire), DIVE in the middle while a dive is left, and P to pause. Turn the phone sideways for a larger picture.
+
 ## Credits
 
 - [Xenon 2: Megablast](https://en.wikipedia.org/wiki/Xenon_2:_Megablast) by [The Bitmap Brothers](https://en.wikipedia.org/wiki/The_Bitmap_Brothers), published by [Image Works](https://en.wikipedia.org/wiki/Image_Works) (1989).
