@@ -13,3 +13,6 @@ __pycache__/
 # The built xBRZ extension (rebuilt from tools/xbrz/src)
 *.pyd
 *.so
+
+# Local launchers
+*.bat
