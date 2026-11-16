@@ -1,5 +1,7 @@
 # Xenon 2 Megablast remake
 
+![Xenon 2 Megablast remake](docs/poster.png)
+
 A faithful remake of **Xenon 2 Megablast** (The Bitmap Brothers, 1989) for modern computers, made with Godot, together with an **ENHANCED** edition that brings the game to high resolution screens.
 
 
@@ -18,14 +20,14 @@ The behaviour follows the original game to the frame: the same enemy waves, path
 
 ## PC or Amiga
 
-The title menu chooses, at any time:
+The title menu chooses them, and F2 and F3 switch them at any moment, even in the middle of a level:
 
-- **graphics**: the PC (VGA) version or the Amiga version, with its own level backgrounds, title screen and colours;
-- **sound**: the PC speaker or the Amiga sound, with the Megablast music and the Amiga sound effects.
+- **graphics** (F2): the PC (VGA) version or the Amiga version, with its own level backgrounds, title screen and colours;
+- **sound** (F3): the PC speaker or the Amiga sound, with the Megablast music and the Amiga sound effects.
 
 ## ORIGINAL 1989 or ENHANCED 2026
 
-The opening screen offers two editions, and **F12** switches between them at any moment, even in the middle of a level.
+The opening screen offers two editions, and **F1** switches between them at any moment, even in the middle of a level.
 
 | | ORIGINAL 1989 | ENHANCED 2026 |
 |---|---|---|
@@ -48,7 +50,9 @@ Open the folder in **Godot 4.7.2** (standard build) and run it, or export it fro
 | Enter | dive |
 | P | pause |
 | Esc | back to the title |
-| F12 | ORIGINAL or ENHANCED |
+| F1 | ORIGINAL or ENHANCED |
+| F2 | PC or Amiga graphics |
+| F3 | PC or Amiga sound |
 | F10 | quit |
 | K, on the title menu | choose your own keys |
 

@@ -3,7 +3,7 @@ extends RefCounted
 # ENHANCED for the screens that build their own picture (title, shop) : every picture they
 # draw on has a twin K times larger, and every drawing is done on both. A source picture
 # with an xBRZ version (assets_hd) is drawn from it, any other is enlarged with nearest.
-# Shown through hd_texture.gd, so F12 and the title's choice switch it at once.
+# Shown through hd_texture.gd, so F1 and the title's choice switch it at once.
 
 const HD_TEXTURE = preload("res://scripts/hd_texture.gd")
 

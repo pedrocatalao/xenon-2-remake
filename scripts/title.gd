@@ -46,7 +46,7 @@ const GAME_OVER := "     GAME OVER      "
 const SOUND_PC := ["     SOUND  PC      ", "   > SOUND  PC <    "]
 const SOUND_AMIGA := ["    SOUND AMIGA     ", "  > SOUND AMIGA <   "]
 # remake : the opening screen, before the original title : ORIGINAL or ENHANCED (the
-# xBRZ graphics drawn at the window's resolution, main.gd _set_enhanced ; F12 switches too)
+# xBRZ graphics drawn at the window's resolution, main.gd _set_enhanced ; F1 switches too)
 
 const INTRO_BY := "REMAKE BY VPAPANIK"
 const INTRO_ORIGINAL := ["  ORIGINAL 1989  ", "> ORIGINAL 1989 <"]

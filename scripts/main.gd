@@ -661,6 +661,7 @@ var wav_path := ""
 var amiga_sound: AmigaSound
 var amiga_music: AmigaSound
 var pc_request := 0
+var title_tune_on := false
 var tune_volume := 0x30
 var use_amiga := true
 var title: TitleScreen
@@ -874,7 +875,7 @@ var invulnerable := false
 var test_full := false
 var held_cheat := false
 
-# ENHANCED (remake only) : F12 switches at once between ORIGINAL and ENHANCED (--enhanced
+# ENHANCED (remake only) : F1 switches at once between ORIGINAL and ENHANCED (--enhanced
 # starts in ENHANCED, for tests). In ENHANCED the pictures drawn in play come from assets_hd
 # (xBRZ, tools/x2xbrz.py) through hd_texture.gd, which keeps the original sizes, and the
 # canvas is drawn at the window's resolution. The game itself stays the original in 320x200.
@@ -1355,6 +1356,8 @@ func _title_tune() -> void:
 	# code 0x5863 : tune 0 whatever the music setting. Amiga game $8230 : tune 0, then 0x3f
 	# at the high byte of the player's volume.
 
+	title_tune_on = true
+
 	if use_amiga:
 		_amiga_tune(0x3f)
 	else:
@@ -1561,6 +1564,8 @@ func _shop_tune() -> void:
 
 
 func _stop_sound() -> void:
+
+	title_tune_on = false
 
 	# PC : interrupt 0x80, function 1. Amiga : $19fba.
 
@@ -3193,10 +3198,34 @@ func _input(event: InputEvent) -> void:
 
 	if event is InputEventKey and event.pressed and not event.echo:
 
-		# remake : F12 switches between ORIGINAL and ENHANCED, not a key of the game
+		# remake, not keys of the game (F10 stays the original's exit) : F1 ORIGINAL or
+		# ENHANCED, F2 PC or Amiga graphics, F3 PC speaker or Amiga sound, at any moment
 
-		if event.physical_keycode == KEY_F12:
+		if event.physical_keycode == KEY_F1:
 			_set_enhanced(not HD_TEXTURE.on)
+			return
+
+		if event.physical_keycode == KEY_F2:
+			_switch_graphics(not use_amiga_gfx)
+
+			for canvas in [map, world, star_layer, overlay, hud, hud_values]:
+				if canvas != null:
+					canvas.queue_redraw()
+
+			return
+
+		if event.physical_keycode == KEY_F3:
+			var title_tune := title_tune_on
+			_switch_sound(not use_amiga)
+
+			# the tune goes on with the other sound : the title's or the level's, from its start
+
+			if title.running:
+				if title_tune:
+					_title_tune()
+			elif music_on and not shop.running:
+				_start_level_tune()
+
 			return
 
 		any_key = true
