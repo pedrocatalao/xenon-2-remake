@@ -89,6 +89,8 @@ static var lines: Array = []
 # the Amiga title (game $8236), from data/amiga_title.json and assets/amiga/title_*.png
 
 var amiga_logo: Image
+var logo_overlay: Sprite2D
+var overlay_size := 0.0
 var amiga_large: Image
 var amiga_small: Image
 var amiga_large_letters := ""
@@ -170,6 +172,16 @@ func _frame() -> void:
 	ticks = 0
 	texture.update(picture)
 	hd.show(large_texture, picture)
+
+	# the smooth logo of ENHANCED changes with the picture it goes with
+
+	if logo_overlay != null:
+		var t := overlay_size
+		var smooth := t * t * (3.0 - 2.0 * t)
+		logo_overlay.position = Vector2(160, 100).lerp(Vector2(48 + 104, 20 + 27), smooth)
+		logo_overlay.scale = Vector2(smooth, smooth)
+		logo_overlay.modulate = Color(1, 1, 1, t)
+		logo_overlay.visible = t > 0.0
 
 
 # ---------------------------------------------------------------- the sequence
@@ -861,6 +873,14 @@ func _load_amiga() -> void:
 	amiga_small = _load("res://assets/amiga/title_small.png")
 	amiga_logo = _load("res://assets/amiga/title_logo.png")
 
+	# ENHANCED : the smooth logo of the zoom, made here hidden (made at its first use it
+	# showed for a frame at the top left and held the title up while loading)
+
+	logo_overlay = Sprite2D.new()
+	logo_overlay.texture = main._gfx("res://assets/amiga/title_logo.png")
+	logo_overlay.visible = false
+	add_child(logo_overlay)
+
 
 func _amiga_credits() -> void:
 
@@ -1040,6 +1060,8 @@ func _amiga_clear() -> void:
 
 	hd.fill(picture, amiga_colours[0])
 
+	overlay_size = 0.0
+
 
 func _amiga_full(texty: int, line: String) -> void:
 
@@ -1108,7 +1130,14 @@ func _amiga_zoom(texty: int, line: String, size: int) -> void:
 func _amiga_logo_zoom(size: int) -> void:
 
 	# $8092 : the logo (208 x 54) with the columns and rows of the zoom mask, from
-	# (160 - 7 size, 100 - 5 size), so it grows from the middle to (48, 20)
+	# (160 - 7 size, 100 - 5 size), so it grows from the middle to (48, 20). Its last step
+	# (size 15 at x 55) jumps to the full logo at x 48.
+	# ENHANCED : the high resolution logo scaled and faded in smoothly from the middle,
+	# ending exactly on the full logo's place (48, 20), sizes 1 to 15 as 1/15 to 1.
+
+	if main.HD_TEXTURE.on and logo_overlay != null:
+		overlay_size = minf(size / 15.0, 1.0)
+		return
 
 	var mask: int = ZOOM_MASKS[size]
 	var y := 100 - 5 * size
