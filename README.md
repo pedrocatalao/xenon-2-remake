@@ -34,7 +34,7 @@ The opening screen offers two editions, and **F1** switches between them at any 
 | Graphics | the original pixels | smooth high resolution graphics |
 | Amiga music | the in-game arrangement | the full arrangement of the original release |
 
-Both editions play exactly the same: only the look and the sound change.
+The game mechanics of the original Amiga and PC versions of Xenon 2 are identical: the same levels, enemies, weapons and timings. So with Amiga or PC graphics and sound, in either edition, the game plays exactly the same: only the look and the sound change.
 
 ## Building
 
