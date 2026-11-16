@@ -257,6 +257,13 @@ func _run() -> void:
 
 	main.start_players(item + 1)
 
+	# ENHANCED : a game started at a level reached before (main.start_at_level loads it)
+
+	if main.HD_TEXTURE.on and main.start_level > 1 and main.start_level <= main.reached_level:
+		running = false
+		main.start_at_level(main.start_level)
+		return
+
 	# 0x5cd4 : LOADING LEVEL 1 for one frame (stars renewed first, 0x5935)
 
 	_new_stars()
@@ -414,6 +421,17 @@ func _menu() -> void:
 		# menu, 0x66e)
 
 		_text_at(8, 184, "K KEYS", medium, MEDIUM_ROWS)
+
+		# ENHANCED : once a level after the first was reached, the level a new game starts
+		# at, between SELECT and the first line, changed with left and right
+
+		var choose_level: bool = main.HD_TEXTURE.on and main.reached_level > 1
+		main.start_level = clampi(main.start_level, 1, maxi(main.reached_level, 1))
+
+		if choose_level:
+			var line := "START AT LEVEL %d" % main.start_level
+			_text_at((320 - 16 * line.length()) / 2, 0x28, line, medium, MEDIUM_ROWS)
+
 		_stars()
 		await _frame()
 
@@ -428,8 +446,18 @@ func _menu() -> void:
 		if main.held_down:
 			dirs |= 2
 
+		dirs |= _sideways()
 		var pressed := dirs & ~held
 		held = dirs
+
+		if choose_level and pressed & 12:
+			var level: int = main.start_level + (1 if pressed & 8 else -1)
+
+			if level >= 1 and level <= main.reached_level:
+				main._menu_sound(8, 0xc)
+				main.start_level = level
+
+			continue
 
 		if main.any_key and main.last_key == KEY_K:
 			main.any_key = false

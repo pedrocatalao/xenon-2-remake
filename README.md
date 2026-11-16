@@ -14,13 +14,13 @@ This project brings it back with love and respect: a faithful remake for modern 
 
 ## Download
 
-Latest release: **[1.0.2](https://github.com/vpapanik/xenon-2-remake/releases/latest)**
+Latest release: **[1.0.3](https://github.com/vpapanik/xenon-2-remake/releases/latest)**
 
 | Platform | File |
 |---|---|
-| Windows (x86_64) | [Xenon2Remake-1.0.2-windows-x86_64.zip](https://github.com/vpapanik/xenon-2-remake/releases/download/v1.0.2/Xenon2Remake-1.0.2-windows-x86_64.zip) : unzip and run `Xenon2Remake.exe` |
-| Linux (x86_64) | [Xenon2Remake-1.0.2-linux-x86_64.tar.gz](https://github.com/vpapanik/xenon-2-remake/releases/download/v1.0.2/Xenon2Remake-1.0.2-linux-x86_64.tar.gz) : extract and run `./Xenon2Remake.x86_64` |
-| Web | [Xenon2Remake-1.0.2-web.zip](https://github.com/vpapanik/xenon-2-remake/releases/download/v1.0.2/Xenon2Remake-1.0.2-web.zip) : unzip and serve the folder with any web server, then open it in the browser |
+| Windows (x86_64) | [Xenon2Remake-1.0.3-windows-x86_64.zip](https://github.com/vpapanik/xenon-2-remake/releases/download/v1.0.3/Xenon2Remake-1.0.3-windows-x86_64.zip) : unzip and run `Xenon2Remake.exe` |
+| Linux (x86_64) | [Xenon2Remake-1.0.3-linux-x86_64.tar.gz](https://github.com/vpapanik/xenon-2-remake/releases/download/v1.0.3/Xenon2Remake-1.0.3-linux-x86_64.tar.gz) : extract and run `./Xenon2Remake.x86_64` |
+| Web | [Xenon2Remake-1.0.3-web.zip](https://github.com/vpapanik/xenon-2-remake/releases/download/v1.0.3/Xenon2Remake-1.0.3-web.zip) : unzip and serve the folder with any web server, then open it in the browser |
 
 ## The game
 
@@ -62,7 +62,8 @@ ENHANCED also smooths a few small rough edges of the original:
 - the CONTINUE countdown counts real seconds, 10 in all instead of about 4
 - the texts of the title screen are centred
 - the logo zooms in smoothly on the title screen
-- after a weapon is sold in the shop, the side weapons left move next to the ship at once, instead of hanging in the air until the next life or level.
+- after a weapon is sold in the shop, the side weapons left move next to the ship at once, instead of hanging in the air until the next life or level
+- the furthest level you reached is remembered, and the title menu can start a new game there: START AT LEVEL, changed with left and right.
 
 ## Building
 

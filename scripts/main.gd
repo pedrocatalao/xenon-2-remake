@@ -695,6 +695,13 @@ var paused := false
 # last_key : the physical key of the last key press, for the customise screen.
 
 static var custom_keys := {}
+
+# ENHANCED (remake only) : the furthest level reached, kept in user://progress.cfg across
+# runs (0 until read), and the level the title menu starts a new game at
+
+const PROGRESS_PATH := "user://progress.cfg"
+static var reached_level := 0
+static var start_level := 1
 var last_key := 0
 
 # Amiga graphics (tools/x2amiga.py) : the same tiles and sprites as the PC, plus the level's
@@ -1221,7 +1228,10 @@ void fragment() {
 	ship_box = _box("X2SPR", ship_frame, ship_x, ship_y)
 	_place()
 
+	_read_progress()
+
 	if not next.is_empty():
+		_note_level()
 
 		if shot_path == "":
 			title.loading(level_number)
@@ -3479,7 +3489,14 @@ func _next_level() -> void:
 		_restart_player()
 		return
 
-	var next := level_number % 5 + 1
+	_carry_level(level_number % 5 + 1, game_loop + (1 if level_number == 5 else 0))
+	get_tree().reload_current_scene()
+
+
+func _carry_level(next: int, loop: int) -> void:
+
+	# what goes on to the next level, the scene loaded again with it (_ready)
+
 	carried = {
 		"seed": seed,
 		"music": music_on,
@@ -3495,7 +3512,7 @@ func _next_level() -> void:
 			"speed_level": speed_level,
 			"weapons": saved_weapons.duplicate(true),
 			"continues": title.credits,
-			"loop": game_loop + (1 if level_number == 5 else 0),
+			"loop": loop,
 			"nashwan": nashwan,
 			"dive": dive,
 			"shades": shades,
@@ -3505,7 +3522,44 @@ func _next_level() -> void:
 			"stars": stars.duplicate(true),
 		},
 	}
-	get_tree().reload_current_scene()
+
+
+func start_at_level(level: int) -> void:
+
+	# ENHANCED : a new game started at a level reached before, chosen on the title menu.
+	# The players as at the start of a game (score 0, 3 lives, the base gun), carried to
+	# that level as to a next level : LOADING LEVEL n, then GET READY.
+
+	_carry_level(level, 1)
+	get_tree().reload_current_scene.call_deferred()
+
+
+func _read_progress() -> void:
+
+	# ENHANCED : the furthest level reached, read once a run
+
+	if reached_level != 0:
+		return
+
+	reached_level = 1
+	var config := ConfigFile.new()
+
+	if config.load(PROGRESS_PATH) == OK:
+		reached_level = clampi(int(config.get_value("game", "reached_level", 1)), 1, 5)
+
+
+func _note_level() -> void:
+
+	# ENHANCED : a level started in play is remembered (not by the test runs)
+
+	if shot_path != "" or level_number <= reached_level:
+		return
+
+	reached_level = level_number
+	var config := ConfigFile.new()
+	config.load(PROGRESS_PATH)
+	config.set_value("game", "reached_level", reached_level)
+	config.save(PROGRESS_PATH)
 
 
 func _carry_other() -> Dictionary:
