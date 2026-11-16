@@ -8,6 +8,10 @@ In 1989 **Xenon 2 Megablast** arrived on the Amiga and the PC and changed what a
 
 This project brings it back with love and respect: a faithful remake for modern computers, made with Godot, that plays exactly as the original did, together with an **ENHANCED** edition that brings the game to high resolution screens.
 
+## Play online
+
+**[Play Xenon 2 Megablast remake in the browser](https://vpapanik.github.io/xenon-2-remake/)**: click the game once so it gets the keyboard, then use the arrows and Space.
+
 ## Download
 
 Latest release: **[1.0.0](https://github.com/vpapanik/xenon-2-remake/releases/latest)**
