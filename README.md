@@ -10,7 +10,7 @@ This project brings it back with love and respect: a faithful remake for modern 
 
 ## Download
 
-Latest release: **[1.0](https://github.com/vpapanik/xenon-2-remake/releases/latest)**
+Latest release: **[1.0.0](https://github.com/vpapanik/xenon-2-remake/releases/latest)**
 
 | Platform | File |
 |---|---|
