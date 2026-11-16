@@ -3226,7 +3226,27 @@ func _input(event: InputEvent) -> void:
 		# keyboard back, text mode, exit to DOS)
 
 		if event.physical_keycode == KEY_F10:
-			get_tree().quit()
+			_quit()
+
+
+func _notification(what: int) -> void:
+
+	# remake : closing the window, as F10
+
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		_quit()
+
+
+func _quit() -> void:
+
+	# remake : the sound players stop first. With a generator still playing, Windows held
+	# the closing program for about 10 s.
+
+	for node in [amiga_sound, amiga_music, sound]:
+		if node != null and node.player != null:
+			node.player.stop()
+
+	get_tree().quit()
 
 
 func _custom_held(action: String) -> bool:
