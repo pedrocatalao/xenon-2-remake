@@ -78,7 +78,7 @@ Open the folder in **Godot 4.7.2** (standard build) and run it, or export it fro
 ## Credits
 
 - [Xenon 2: Megablast](https://en.wikipedia.org/wiki/Xenon_2:_Megablast) by [The Bitmap Brothers](https://en.wikipedia.org/wiki/The_Bitmap_Brothers), published by Image Works (1989).
-- Music: [Bomb the Bass](https://en.wikipedia.org/wiki/Bomb_the_Bass), adapted by David Whittaker.
+- Music: [Bomb the Bass](https://en.wikipedia.org/wiki/Bomb_the_Bass), adapted by [David Whittaker](https://en.wikipedia.org/wiki/David_Whittaker_(video_game_composer)).
 - Remake by vpapanik.
 
 ## Disclaimer
