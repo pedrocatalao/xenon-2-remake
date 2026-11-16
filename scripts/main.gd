@@ -689,10 +689,12 @@ var any_key := false
 var paused := false
 
 # code 0x66e : the keys chosen in Customise keys (ds:0x2fb8 to 0x300d), tested first by the
-# keyboard handler (0x5eeb) ; the default keys keep working. Not saved (as the original).
+# keyboard handler (0x5eeb) ; the default keys keep working. Not saved to disk (as the
+# original), but kept until the program ends : static, so the scene loaded again for the
+# next level or a new game keeps them (as carried).
 # last_key : the physical key of the last key press, for the customise screen.
 
-var custom_keys := {}
+static var custom_keys := {}
 var last_key := 0
 
 # Amiga graphics (tools/x2amiga.py) : the same tiles and sprites as the PC, plus the level's
