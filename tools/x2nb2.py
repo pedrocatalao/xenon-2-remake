@@ -15,6 +15,7 @@ Usage : python x2nb2.py <remake folder> <enhanced folder>
 """
 
 import json
+import numpy as np
 import os
 import sys
 
@@ -68,6 +69,31 @@ for folder, dirs, files in os.walk(ENHANCED):
             target = os.path.join(HD, entry['single'])
             keep_alpha(nb2, Image.open(target)).save(target)
             done += 1
+
+            # a tile sheet : the tiles that changed also into its masked and Amiga sheets,
+            # their colours with those sheets' own transparency
+
+            if target.endswith('_tiles.png'):
+                old = np.asarray(xbrz.convert('RGB')).astype(int)
+                new = np.asarray(nb2.convert('RGB'))
+
+                for extra in ('_tiles_masked.png', '_tiles_amiga.png'):
+                    path = target.replace('_tiles.png', extra)
+                    sheet = np.array(Image.open(path).convert('RGBA'))
+
+                    for ty in range(0, new.shape[0] - 64, 68):
+                        for tx in range(0, new.shape[1] - 64, 68):
+                            oy, ox = ty + 4, tx + 4
+
+                            if not (old[oy:oy + 64, ox:ox + 64] != new[oy:oy + 64, ox:ox + 64]).any():
+                                continue
+
+                            part = sheet[oy:oy + 64, ox:ox + 64]
+                            seen = part[..., 3] > 0
+                            part[seen, :3] = new[oy:oy + 64, ox:ox + 64][seen]
+
+                    Image.fromarray(sheet).save(path)
+                    done += 1
         else:
             k = entry['factor']
 
