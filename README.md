@@ -2,7 +2,7 @@
 
 A faithful remake of **Xenon 2 Megablast** (The Bitmap Brothers, 1989) for modern computers, made with Godot, together with an **ENHANCED** edition that brings the game to high resolution screens.
 
-> This repository does not contain any graphics, music or data of the original game. They are taken from your own copy of the original game.
+> This repository contains only the code of the remake, no graphics, music or data of the original game. To play, the remake needs the files of the original game (the DOS version and the two Amiga disks), from which it extracts its graphics, sound and levels.
 
 ## The game
 
