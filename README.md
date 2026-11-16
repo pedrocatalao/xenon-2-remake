@@ -6,12 +6,12 @@ A faithful remake of **Xenon 2 Megablast** (The Bitmap Brothers, 1989) for moder
 
 ## Download
 
-Latest release: **[1.0.0](https://github.com/vpapanik/xenon-2-remake/releases/latest)**
+Latest release: **[1.0](https://github.com/vpapanik/xenon-2-remake/releases/latest)**
 
 | Platform | File |
 |---|---|
-| Windows (x86_64) | [Xenon2Remake-1.0.0-windows-x86_64.zip](https://github.com/vpapanik/xenon-2-remake/releases/download/v1.0.0/Xenon2Remake-1.0.0-windows-x86_64.zip) : unzip and run `Xenon2Remake.exe` |
-| Linux (x86_64) | [Xenon2Remake-1.0.0-linux-x86_64.tar.gz](https://github.com/vpapanik/xenon-2-remake/releases/download/v1.0.0/Xenon2Remake-1.0.0-linux-x86_64.tar.gz) : extract and run `./Xenon2Remake.x86_64` |
+| Windows (x86_64) | [Xenon2Remake-1.0-windows-x86_64.zip](https://github.com/vpapanik/xenon-2-remake/releases/download/v1.0/Xenon2Remake-1.0-windows-x86_64.zip) : unzip and run `Xenon2Remake.exe` |
+| Linux (x86_64) | [Xenon2Remake-1.0-linux-x86_64.tar.gz](https://github.com/vpapanik/xenon-2-remake/releases/download/v1.0/Xenon2Remake-1.0-linux-x86_64.tar.gz) : extract and run `./Xenon2Remake.x86_64` |
 
 ## The game
 
