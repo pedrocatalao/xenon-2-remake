@@ -45,6 +45,8 @@ The opening screen offers two editions, and **F1** switches between them at any 
 
 The game mechanics of the original Amiga and PC versions of Xenon 2 are identical: the same levels, enemies, weapons and timings. So with Amiga or PC graphics and sound, in either edition, the game plays exactly the same: only the look and the sound change.
 
+![Scenes from the game](images/poster_scenes.png)
+
 ## Building
 
 Open the folder in **Godot 4.7.2** (standard build) and run it, or export it from *Project > Export* for Windows or Linux. Ready builds are on the [Releases](https://github.com/vpapanik/xenon-2-remake/releases) page.
