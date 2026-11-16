@@ -83,7 +83,7 @@ Open the folder in **[Godot 4.7.2](https://godotengine.org/download/)** (standar
 | F10 | quit |
 | K (on the title menu) | choose your own keys |
 
-On phones and tablets the browser version shows touch controls: a joystick on the left half of the screen, FIRE on the right (hold it for autofire), DIVE in the middle while a dive is left, and P to pause. Turn the phone sideways for a larger picture.
+On phones and tablets the browser version shows touch controls, without text. In a level: a joystick at the lower left (or wherever the thumb lands on the left half), the red button fires (hold it for autofire), the green one dives while a dive is left, and the two bars pause. On the menus and in the shop: four arrows and the red button to choose. Turn the phone sideways for a larger picture.
 
 ## Credits
 

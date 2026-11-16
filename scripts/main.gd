@@ -714,7 +714,7 @@ const AMIGA_ITEM_FLAGS := [0, 1, 2, 3, 6, 17]
 var nashwan := 0
 var dive := 0
 var is_web := OS.has_feature("web")
-var web_dives := -1
+var web_state := -1
 
 # two players (code 0x1a19) : ds:0x8e70 the number of players, ds:0x8e7a the current one,
 # ds:0x8f5d + p in the game, ds:0x8f5f + p done with the level and waiting. The other
@@ -1267,15 +1267,16 @@ func _process(delta: float) -> void:
 		_step()
 		_place()
 
-	# remake, the browser : the touch controls of the page (web/touch.html) show DIVE while
-	# a dive is left in a level
+	# remake, the browser : the touch controls of the page (web/touch.html) are a joystick in
+	# a level, arrows on the menus and in the shop, and show DIVE while a dive is left
 
 	if is_web:
-		var dives := dive if not title.running and not shop.running else 0
+		var level := not title.running and not shop.running
+		var state := (1000 + dive) if level else 0
 
-		if dives != web_dives:
-			web_dives = dives
-			JavaScriptBridge.eval("window.x2dive && window.x2dive(%d)" % dives)
+		if state != web_state:
+			web_state = state
+			JavaScriptBridge.eval("window.x2state && window.x2state(%s, %d)" % ["true" if level else "false", dive])
 
 
 func _step() -> void:
