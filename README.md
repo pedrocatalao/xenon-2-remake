@@ -1,6 +1,6 @@
 # Xenon 2 Megablast remake
 
-![Xenon 2 Megablast remake](docs/poster.png)
+![Xenon 2 Megablast remake](images/poster.png)
 
 A faithful remake of **Xenon 2 Megablast** (The Bitmap Brothers, 1989) for modern computers, made with Godot, together with an **ENHANCED** edition that brings the game to high resolution screens.
 
