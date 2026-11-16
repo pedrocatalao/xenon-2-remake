@@ -49,6 +49,8 @@ const SOUND_AMIGA := ["    SOUND AMIGA     ", "  > SOUND AMIGA <   "]
 # xBRZ graphics drawn at the window's resolution, main.gd _set_enhanced ; F1 switches too)
 
 const INTRO_BY := "REMAKE BY VPAPANIK"
+const INTRO_HOLD := 9
+const INTRO_FADE := 13
 const INTRO_ORIGINAL := ["  ORIGINAL 1989  ", "> ORIGINAL 1989 <"]
 const INTRO_ENHANCED := ["  ENHANCED 2026  ", "> ENHANCED 2026 <"]
 const GRAPHICS_PC :=["    GRAPHICS  PC    ", "  > GRAPHICS  PC <  "]
@@ -774,12 +776,7 @@ func _intro() -> void:
 	var held := 3
 
 	while true:
-		_clear()
-		_intro_logo()
-		_centred(0x58, INTRO_BY, large)
-		_centred(0x80, INTRO_ORIGINAL[1 if item == 0 else 0], large)
-		_centred(0x98, INTRO_ENHANCED[1 if item == 1 else 0], large)
-		_stars()
+		_intro_screen(item)
 		await _frame()
 
 		var dirs := 0
@@ -805,7 +802,29 @@ func _intro() -> void:
 			main.fire_event = false
 			main.enter_event = false
 			main.pc_request = 9
+
+			# a short pause so the sound plays out (about 0.5 s), then the screen fades to
+			# black (about 0.7 s) before the title and its music
+
+			for i in INTRO_HOLD + INTRO_FADE:
+				_intro_screen(item)
+				var v := 1.0 - clampf(float(i - INTRO_HOLD + 1) / INTRO_FADE, 0.0, 1.0)
+				view.modulate = Color(v, v, v)
+				await _frame()
+
+			_clear()
+			await _frame()
+			view.modulate = Color.WHITE
 			return
+
+
+func _intro_screen(item: int) -> void:
+	_clear()
+	_intro_logo()
+	_centred(0x58, INTRO_BY, large)
+	_centred(0x80, INTRO_ORIGINAL[1 if item == 0 else 0], large)
+	_centred(0x98, INTRO_ENHANCED[1 if item == 1 else 0], large)
+	_stars()
 
 
 func _intro_logo() -> void:
