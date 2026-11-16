@@ -1098,6 +1098,10 @@ func _sell_loop() -> void:
 		_credits()
 		chosen["item"] = 0
 		main._remove_launcher(chosen["launcher"])
+
+		if main.HD_TEXTURE.on:
+			main._pack_side_slots()
+
 		_clear_text()
 		await _say(data["messages"]["here_cash"])
 

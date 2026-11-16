@@ -3731,6 +3731,30 @@ func _remove_launcher(launcher: Dictionary) -> void:
 		weapon_slots[launcher["slot"]] = null
 
 
+func _pack_side_slots() -> void:
+
+	# ENHANCED : after a sale the side weapons left move to the first side slots at once,
+	# in slot order, as the original does only when it rebuilds the weapons (0x193c, after
+	# a lost life or on the next level). A laser no longer hangs in the air at an outer
+	# slot when the cannon next to the ship was sold. A cannon's companion follows the
+	# cannon's offset by itself.
+
+	var side: Array = []
+
+	for slot in range(1, 5):
+		if weapon_slots[slot] != null:
+			side.append(weapon_slots[slot])
+			weapon_slots[slot] = null
+
+	for i in side.size():
+		var launcher: Dictionary = side[i]
+		launcher["slot"] = i + 1
+		launcher["offset"] = CANNON_OFFSETS[i]
+		launcher["x"] = ship_x + CANNON_OFFSETS[i].x
+		launcher["y"] = ship_y + CANNON_OFFSETS[i].y
+		weapon_slots[i + 1] = launcher
+
+
 func _power_slot(slot: int) -> Dictionary:
 
 	# code 0x2c21, 0x2d19, 0x2ef8 : one level more while below the maximum

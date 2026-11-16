@@ -56,6 +56,14 @@ The game mechanics of the original Amiga and PC versions of Xenon 2 are identica
 
 ![Scenes from the game](images/poster_scenes.png)
 
+ENHANCED also smooths a few small rough edges of the original:
+
+- the Amiga music goes on through a lost life instead of starting again
+- the CONTINUE countdown counts real seconds, 10 in all instead of about 4
+- the texts of the title screen are centred
+- the logo zooms in smoothly on the title screen
+- after a weapon is sold in the shop, the side weapons left move next to the ship at once, instead of hanging in the air until the next life or level.
+
 ## Building
 
 Open the folder in **[Godot 4.7.2](https://godotengine.org/download/)** (standard build) and run it, or export it from *Project > Export* for Windows, Linux or the Web. Ready builds are on the [Releases](https://github.com/vpapanik/xenon-2-remake/releases) page.
