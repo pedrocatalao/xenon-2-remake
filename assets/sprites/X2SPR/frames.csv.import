@@ -1,0 +1,19 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://cy1unca14155p"
+
+[deps]
+
+files=["res://assets/sprites/X2SPR/frames.f0.translation", "res://assets/sprites/X2SPR/frames.f1.translation", "res://assets/sprites/X2SPR/frames.f2.translation", "res://assets/sprites/X2SPR/frames.f3.translation", "res://assets/sprites/X2SPR/frames.f4.translation", "res://assets/sprites/X2SPR/frames.f5.translation", "res://assets/sprites/X2SPR/frames.width.translation", "res://assets/sprites/X2SPR/frames.height.translation"]
+
+source_file="res://assets/sprites/X2SPR/frames.csv"
+dest_files=["res://assets/sprites/X2SPR/frames.f0.translation", "res://assets/sprites/X2SPR/frames.f1.translation", "res://assets/sprites/X2SPR/frames.f2.translation", "res://assets/sprites/X2SPR/frames.f3.translation", "res://assets/sprites/X2SPR/frames.f4.translation", "res://assets/sprites/X2SPR/frames.f5.translation", "res://assets/sprites/X2SPR/frames.width.translation", "res://assets/sprites/X2SPR/frames.height.translation"]
+
+[params]
+
+compress=1
+delimiter=0
+unescape_keys=false
+unescape_translations=true

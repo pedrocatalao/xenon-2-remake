@@ -2,7 +2,6 @@
 
 A faithful remake of **Xenon 2 Megablast** (The Bitmap Brothers, 1989) for modern computers, made with Godot, together with an **ENHANCED** edition that brings the game to high resolution screens.
 
-> This repository contains only the code of the remake, no graphics, music or data of the original game. To play, the remake needs the files of the original game (the DOS version and the two Amiga disks), from which it extracts its graphics, sound and levels.
 
 ## The game
 
@@ -33,11 +32,12 @@ The opening screen offers two editions, and **F12** switches between them at any
 | Picture | the original 320 × 200 picture, enlarged | every picture drawn sharp at the resolution of your screen |
 | Graphics | the original pixels | smooth high resolution graphics, with the ship, its weapons, power-ups and title logos redrawn |
 | Amiga music | the in-game arrangement | the full arrangement of the original release, with its scratches and voices |
-| Music after losing a life | starts again from the beginning | carries on |
-| Title screens | the original text positions | centred texts |
-| Continue countdown | the original, about 4 seconds | 9 to 0 in real seconds |
 
 Both editions play exactly the same: only the look and the sound change.
+
+## Building
+
+Open the folder in **Godot 4.7.2** (standard build) and run it, or export it from *Project > Export* for Windows or Linux. Ready builds are on the Releases page.
 
 ## Controls
 

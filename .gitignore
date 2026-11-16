@@ -1,11 +1,6 @@
 # Godot
 .godot/
 
-# Everything taken from the original game is rebuilt locally by tools/ and never committed
-assets/
-assets_hd/
-data/
-
 # Python
 __pycache__/
 *.pyc

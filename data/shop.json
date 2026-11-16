@@ -1,0 +1,1072 @@
+{
+ "palette": [
+  [
+   0,
+   0,
+   0
+  ],
+  [
+   255,
+   182,
+   109
+  ],
+  [
+   255,
+   146,
+   73
+  ],
+  [
+   219,
+   109,
+   73
+  ],
+  [
+   73,
+   73,
+   109
+  ],
+  [
+   109,
+   109,
+   146
+  ],
+  [
+   146,
+   146,
+   182
+  ],
+  [
+   255,
+   219,
+   255
+  ],
+  [
+   182,
+   182,
+   219
+  ],
+  [
+   36,
+   36,
+   73
+  ],
+  [
+   0,
+   0,
+   36
+  ],
+  [
+   73,
+   0,
+   0
+  ],
+  [
+   109,
+   0,
+   0
+  ],
+  [
+   146,
+   36,
+   0
+  ],
+  [
+   255,
+   182,
+   0
+  ],
+  [
+   182,
+   73,
+   36
+  ]
+ ],
+ "slots": [
+  [
+   4,
+   4
+  ],
+  [
+   45,
+   4
+  ],
+  [
+   86,
+   4
+  ],
+  [
+   127,
+   4
+  ],
+  [
+   168,
+   4
+  ],
+  [
+   4,
+   45
+  ],
+  [
+   45,
+   45
+  ],
+  [
+   86,
+   45
+  ],
+  [
+   127,
+   45
+  ],
+  [
+   168,
+   45
+  ],
+  [
+   4,
+   86
+  ],
+  [
+   45,
+   86
+  ],
+  [
+   86,
+   86
+  ],
+  [
+   127,
+   86
+  ],
+  [
+   168,
+   86
+  ],
+  [
+   4,
+   127
+  ],
+  [
+   45,
+   127
+  ],
+  [
+   86,
+   127
+  ],
+  [
+   127,
+   127
+  ],
+  [
+   168,
+   127
+  ]
+ ],
+ "items": {
+  "1": {
+   "anim": null,
+   "price": 0,
+   "text": "FORWARD SHOT",
+   "flags": 1,
+   "handler": "0x761"
+  },
+  "2": {
+   "anim": {
+    "frames": [
+     "X2SPR/137",
+     "X2SPR/138",
+     "X2SPR/139",
+     "X2SPR/140",
+     "X2SPR/141",
+     "X2SPR/140",
+     "X2SPR/139",
+     "X2SPR/138"
+    ],
+    "loop": 0
+   },
+   "price": 200,
+   "text": "ADVICE",
+   "flags": 0,
+   "handler": "0x4f9d"
+  },
+  "3": {
+   "anim": {
+    "frames": [
+     "X2SPR/041",
+     "X2SPR/042",
+     "X2SPR/043",
+     "X2SPR/044",
+     "X2SPR/045",
+     "X2SPR/046",
+     "X2SPR/047",
+     "X2SPR/048",
+     "X2SPR/048",
+     "X2SPR/048"
+    ],
+    "loop": 0
+   },
+   "price": 500,
+   "text": "SPEEDUP",
+   "flags": 0,
+   "handler": "0x2ab2"
+  },
+  "4": {
+   "anim": {
+    "frames": [
+     "X2SPR/087",
+     "X2SPR/088",
+     "X2SPR/089",
+     "X2SPR/088"
+    ],
+    "loop": 0
+   },
+   "price": 500,
+   "text": "HEALTH\rPOWER 1",
+   "flags": 0,
+   "handler": "0x2a48"
+  },
+  "5": {
+   "anim": {
+    "frames": [
+     "X2SPR/056",
+     "X2SPR/057",
+     "X2SPR/058",
+     "X2SPR/059",
+     "X2SPR/060",
+     "X2SPR/061",
+     "X2SPR/062",
+     "X2SPR/048",
+     "X2SPR/048",
+     "X2SPR/048"
+    ],
+    "loop": 0
+   },
+   "price": 500,
+   "text": "AUTOFIRE",
+   "flags": 0,
+   "handler": "0x2aa4"
+  },
+  "6": {
+   "anim": {
+    "frames": [
+     "X2SPR/104",
+     "X2SPR/105",
+     "X2SPR/106",
+     "X2SPR/107",
+     "X2SPR/108",
+     "X2SPR/107",
+     "X2SPR/106",
+     "X2SPR/105"
+    ],
+    "loop": 0
+   },
+   "price": 600,
+   "text": "SUPER NASHWAN POWER",
+   "flags": 0,
+   "handler": "0x4f96"
+  },
+  "7": {
+   "anim": {
+    "frames": [
+     "X2SPR/084",
+     "X2SPR/085",
+     "X2SPR/086",
+     "X2SPR/085"
+    ],
+    "loop": 0
+   },
+   "price": 1000,
+   "text": "HEALTH\rPOWER 2",
+   "flags": 0,
+   "handler": "0x2a66"
+  },
+  "8": {
+   "anim": {
+    "frames": [
+     "X2WEAPS/072",
+     "X2WEAPS/073",
+     "X2WEAPS/074",
+     "X2WEAPS/075",
+     "X2WEAPS/076"
+    ],
+    "loop": 0
+   },
+   "price": 1000,
+   "text": "REAR SHOT",
+   "flags": 4,
+   "handler": "0x308c"
+  },
+  "9": {
+   "anim": {
+    "frames": [
+     "X2WEAPS/059",
+     "X2WEAPS/060",
+     "X2WEAPS/061"
+    ],
+    "loop": 0
+   },
+   "price": 1000,
+   "text": "MINE",
+   "flags": 4,
+   "handler": "0x2f7c"
+  },
+  "10": {
+   "anim": {
+    "frames": [
+     "X2SPR/094",
+     "X2SPR/095",
+     "X2SPR/096",
+     "X2SPR/097",
+     "X2SPR/098",
+     "X2SPR/097",
+     "X2SPR/096",
+     "X2SPR/095"
+    ],
+    "loop": 0
+   },
+   "price": 1000,
+   "text": "SIDE SHOT",
+   "flags": 8,
+   "handler": "0x2ca6"
+  },
+  "11": {
+   "anim": {
+    "frames": [
+     "X2WEAPS/012",
+     "X2WEAPS/013",
+     "X2WEAPS/014",
+     "X2WEAPS/015",
+     "X2WEAPS/016",
+     "X2WEAPS/017",
+     "X2WEAPS/018",
+     "X2WEAPS/019",
+     "X2WEAPS/020"
+    ],
+    "loop": 0
+   },
+   "price": 1200,
+   "text": "ELECTRO BALL",
+   "flags": 4,
+   "handler": "0x2f08"
+  },
+  "12": {
+   "anim": {
+    "frames": [
+     "X2SPR/049",
+     "X2SPR/050",
+     "X2SPR/051",
+     "X2SPR/052",
+     "X2SPR/053",
+     "X2SPR/054",
+     "X2SPR/055",
+     "X2SPR/048",
+     "X2SPR/048",
+     "X2SPR/048"
+    ],
+    "loop": 0
+   },
+   "price": 2000,
+   "text": "POWERUP",
+   "flags": 0,
+   "handler": "0x2a6e"
+  },
+  "13": {
+   "anim": {
+    "frames": [
+     "X2WEAPS/056",
+     "X2WEAPS/057",
+     "X2WEAPS/058"
+    ],
+    "loop": 0
+   },
+   "price": 3000,
+   "text": "MINE",
+   "flags": 4,
+   "handler": "0x3004"
+  },
+  "14": {
+   "anim": {
+    "frames": [
+     "X2WEAPS/101"
+    ],
+    "loop": 0
+   },
+   "price": 3000,
+   "text": "DOUBLE SHOT",
+   "flags": 1,
+   "handler": "0x2c32"
+  },
+  "15": {
+   "anim": {
+    "frames": [
+     "X2WEAPS/051",
+     "X2WEAPS/052",
+     "X2WEAPS/053",
+     "X2WEAPS/054",
+     "X2WEAPS/055"
+    ],
+    "loop": 0
+   },
+   "price": 4000,
+   "text": "CANNON",
+   "flags": 2,
+   "handler": "0x3246"
+  },
+  "16": {
+   "anim": {
+    "frames": [
+     "X2SPR/063",
+     "X2SPR/064",
+     "X2SPR/065",
+     "X2SPR/066",
+     "X2SPR/067",
+     "X2SPR/068",
+     "X2SPR/069",
+     "X2SPR/048",
+     "X2SPR/048",
+     "X2SPR/048"
+    ],
+    "loop": 0
+   },
+   "price": 4000,
+   "text": "DIVE",
+   "flags": 0,
+   "handler": "0x2ac4"
+  },
+  "17": {
+   "anim": {
+    "frames": [
+     "X2WEAPS/079",
+     "X2WEAPS/080",
+     "X2WEAPS/081",
+     "X2WEAPS/082",
+     "X2WEAPS/083",
+     "X2WEAPS/084",
+     "X2WEAPS/085"
+    ],
+    "loop": 0
+   },
+   "price": 4000,
+   "text": "MISSILE LAUNCHER",
+   "flags": 2,
+   "handler": "0x3126"
+  },
+  "18": {
+   "anim": {
+    "frames": [
+     "X2WEAPS/004",
+     "X2WEAPS/005",
+     "X2WEAPS/006",
+     "X2WEAPS/007",
+     "X2WEAPS/008",
+     "X2WEAPS/009",
+     "X2WEAPS/010",
+     "X2WEAPS/011"
+    ],
+    "loop": 0
+   },
+   "price": 4000,
+   "text": "LASER",
+   "flags": 2,
+   "handler": "0x31b6"
+  },
+  "19": {
+   "anim": {
+    "frames": [
+     "X2WEAPS/000",
+     "X2WEAPS/001",
+     "X2WEAPS/002",
+     "X2WEAPS/003"
+    ],
+    "loop": 0
+   },
+   "price": 4500,
+   "text": "DRONE",
+   "flags": 4,
+   "handler": "0x2e84"
+  },
+  "20": {
+   "anim": {
+    "frames": [
+     "X2WEAPS/091",
+     "X2WEAPS/092",
+     "X2WEAPS/093",
+     "X2WEAPS/094"
+    ],
+    "loop": 0
+   },
+   "price": 5000,
+   "text": "FLAMER",
+   "flags": 1,
+   "handler": "0x2df0"
+  },
+  "21": {
+   "anim": {
+    "frames": [
+     "X2WEAPS/062",
+     "X2WEAPS/063",
+     "X2WEAPS/064",
+     "X2WEAPS/065",
+     "X2WEAPS/066",
+     "X2WEAPS/067"
+    ],
+    "loop": 0
+   },
+   "price": 5500,
+   "text": "BOMB",
+   "flags": 8,
+   "handler": "0x2d2a"
+  },
+  "22": {
+   "anim": {
+    "frames": [
+     "X2SPR/093"
+    ],
+    "loop": 0
+   },
+   "price": 6000,
+   "text": "EXTRA LIFE",
+   "flags": 0,
+   "handler": "0x4fde"
+  },
+  "23": {
+   "anim": {
+    "frames": [
+     "X2WEAPS/023",
+     "X2WEAPS/024"
+    ],
+    "loop": 0
+   },
+   "price": 6000,
+   "text": "HOMING MISSILE",
+   "flags": 16,
+   "handler": "0x2d86"
+  },
+  "24": {
+   "anim": {
+    "frames": [
+     "X2SPR/034",
+     "X2SPR/035",
+     "X2SPR/036",
+     "X2SPR/037",
+     "X2SPR/038",
+     "X2SPR/039",
+     "X2SPR/040",
+     "X2SPR/048",
+     "X2SPR/048",
+     "X2SPR/048"
+    ],
+    "loop": 0
+   },
+   "price": 6000,
+   "text": "PROTECTION",
+   "flags": 0,
+   "handler": "0x2abe"
+  },
+  "25": {
+   "anim": {
+    "frames": [
+     "SHOP/093",
+     "SHOP/093",
+     "SHOP/093",
+     "SHOP/093",
+     "SHOP/093",
+     "SHOP/093",
+     "SHOP/093",
+     "SHOP/093",
+     "SHOP/094",
+     "SHOP/095",
+     "SHOP/096"
+    ],
+    "loop": 0
+   },
+   "price": 6000,
+   "text": "BITMAP SHADES",
+   "flags": 0,
+   "handler": "0x4fd7"
+  },
+  "26": {
+   "anim": {
+    "frames": [
+     "SHOP/056",
+     "SHOP/057",
+     "SHOP/058",
+     "SHOP/059",
+     "SHOP/060",
+     "SHOP/061",
+     "SHOP/062",
+     "SHOP/063",
+     "SHOP/064",
+     "SHOP/065",
+     "SHOP/066",
+     "SHOP/067",
+     "SHOP/068",
+     "SHOP/069",
+     "SHOP/070",
+     "SHOP/071"
+    ],
+    "loop": 0
+   }
+  },
+  "27": {
+   "anim": {
+    "frames": [
+     "SHOP/011"
+    ],
+    "loop": 0
+   }
+  }
+ },
+ "box_frames": [
+  "SHOP/072",
+  "SHOP/073",
+  "SHOP/074",
+  "SHOP/075",
+  "SHOP/076",
+  "SHOP/077",
+  "SHOP/078",
+  "SHOP/079",
+  "SHOP/080",
+  "SHOP/010"
+ ],
+ "box_back": [
+  "SHOP/010",
+  "SHOP/010"
+ ],
+ "background": [
+  {
+   "x": 299,
+   "y": 72,
+   "anim": {
+    "frames": [
+     "SHOP/012",
+     "SHOP/013",
+     "SHOP/014",
+     "SHOP/015",
+     "SHOP/016",
+     "SHOP/017",
+     "SHOP/018",
+     "SHOP/019"
+    ],
+    "loop": 0
+   }
+  },
+  {
+   "x": 216,
+   "y": 63,
+   "anim": {
+    "frames": [
+     "SHOP/020",
+     "SHOP/021",
+     "SHOP/022",
+     "SHOP/023",
+     "SHOP/024",
+     "SHOP/025",
+     "SHOP/026",
+     "SHOP/027"
+    ],
+    "loop": 0
+   }
+  },
+  {
+   "x": 295,
+   "y": 18,
+   "anim": {
+    "frames": [
+     "SHOP/028",
+     "SHOP/029",
+     "SHOP/030",
+     "SHOP/031",
+     "SHOP/032",
+     "SHOP/033"
+    ],
+    "loop": 0
+   }
+  },
+  {
+   "x": 295,
+   "y": 50,
+   "anim": {
+    "frames": [
+     "SHOP/034",
+     "SHOP/035",
+     "SHOP/036",
+     "SHOP/037"
+    ],
+    "loop": 0
+   }
+  },
+  {
+   "x": 227,
+   "y": 9,
+   "anim": {
+    "frames": [
+     "SHOP/038",
+     "SHOP/039",
+     "SHOP/040",
+     "SHOP/041",
+     "SHOP/042",
+     "SHOP/043"
+    ],
+    "loop": 0
+   }
+  },
+  {
+   "x": 215,
+   "y": 16,
+   "anim": {
+    "frames": [
+     "SHOP/044",
+     "SHOP/045",
+     "SHOP/046",
+     "SHOP/047",
+     "SHOP/048",
+     "SHOP/049"
+    ],
+    "loop": 0
+   }
+  },
+  {
+   "x": 215,
+   "y": 54,
+   "anim": {
+    "frames": [
+     "SHOP/050",
+     "SHOP/051",
+     "SHOP/052",
+     "SHOP/053",
+     "SHOP/054",
+     "SHOP/055"
+    ],
+    "loop": 0
+   }
+  }
+ ],
+ "advice": [
+  "YOU CAN'T TAKE IT WITH YOU",
+  "YOU CAN'T TAKE IT WITH YOU",
+  "HAVEN'T YOU HAD ENOUGH ADVICE ? WHAT DO YOU WANT ME TO DO, PLAY THE GAME FOR YOU ?",
+  "BUY DOUBLE SHOT",
+  "KILL THE EYES",
+  "HAVEN'T YOU HAD ENOUGH ADVICE ? WHAT DO YOU WANT ME TO DO, PLAY THE GAME FOR YOU ?",
+  "BUY POWER UP",
+  "MOVE CLOSE TO WAKE SPIDER",
+  "HAVEN'T YOU HAD ENOUGH ADVICE ? WHAT DO YOU WANT ME TO DO, PLAY THE GAME FOR YOU ?",
+  "BUY LASER",
+  "FIGURE OF EIGHT",
+  "HAVEN'T YOU HAD ENOUGH ADVICE ? WHAT DO YOU WANT ME TO DO, PLAY THE GAME FOR YOU ?",
+  "LEFT RIGHT LEFT",
+  "BUY REAR SHOT",
+  "HAVEN'T YOU HAD ENOUGH ADVICE ? WHAT DO YOU WANT ME TO DO, PLAY THE GAME FOR YOU ?",
+  "HEADS AND TAILS",
+  "BUY CANNON",
+  "HAVEN'T YOU HAD ENOUGH ADVICE ? WHAT DO YOU WANT ME TO DO, PLAY THE GAME FOR YOU ?",
+  "BUY REAR SHOT",
+  "BUY REAR SHOT",
+  "HAVEN'T YOU HAD ENOUGH ADVICE ? WHAT DO YOU WANT ME TO DO, PLAY THE GAME FOR YOU ?",
+  "BUY LASER",
+  "DON'T HANG BACK FROM TANKS",
+  "HAVEN'T YOU HAD ENOUGH ADVICE ? WHAT DO YOU WANT ME TO DO, PLAY THE GAME FOR YOU ?",
+  "DON'T WAIT IN CHANNELS",
+  "DON'T WAIT IN CHANNELS",
+  "HAVEN'T YOU HAD ENOUGH ADVICE ? WHAT DO YOU WANT ME TO DO, PLAY THE GAME FOR YOU ?",
+  "DON'T WAIT IN CHANNELS",
+  "DON'T WAIT IN CHANNELS",
+  "HAVEN'T YOU HAD ENOUGH ADVICE ? WHAT DO YOU WANT ME TO DO, PLAY THE GAME FOR YOU ?"
+ ],
+ "messages": {
+  "sell": "WHAT DO YOU WANT TO SELL ME ?",
+  "buy": "O.K. WHAT DO YOU WANT TO BUY ?",
+  "welcome": "WELCOME TO COLIN'S BARGAIN BASEMENT",
+  "everything": "EVERYTHING MUST GO",
+  "last_chance": "THIS MAY BE YOUR LAST CHANCE",
+  "out_of_stock": "THAT ITEM IS OUT OF STOCK !\r\rTRY AGAIN",
+  "no_room": "THERE ISN'T ROOM FOR THAT ON YOUR SHIP !",
+  "give_cash": "GIVE ME THE CASH !\r\r",
+  "what_else": "\rWHAT ELSE DO YOU WANT ?",
+  "here_cash": "HERE'S THE CASH\r\rWHAT ELSE DO YOU WANT TO SELL ?",
+  "will_pay": "\r\rI WILL PAY ",
+  "will_cost": "\r\rTHAT WILL COST ",
+  "power": "\rPOWER ",
+  "end_1": "WELL, THAT'S IT VIEWERS.\r\r",
+  "end_2": "DON'T FORGET TO TURN OFF YOUR SET...\r\r",
+  "end_3": "WAS IT GOOD ENOUGH FOR YOU ?"
+ },
+ "sprites": {
+  "ec90": "SHOP/091",
+  "efc0": "SHOP/092",
+  "abe4": "SHOP/000",
+  "ace4": "SHOP/001",
+  "ad94": "SHOP/002",
+  "ae94": "SHOP/003",
+  "af94": "SHOP/004",
+  "b044": "SHOP/005",
+  "b144": "SHOP/006",
+  "b1ae": "SHOP/007",
+  "b218": "SHOP/008",
+  "b282": "SHOP/009",
+  "dde0": "SHOP/081",
+  "e1e8": "SHOP/083",
+  "dfe4": "SHOP/082",
+  "e3ec": "SHOP/084",
+  "e7f4": "SHOP/086",
+  "e5f0": "SHOP/085",
+  "ea9e": "SHOP/088",
+  "e9f8": "SHOP/087",
+  "ebea": "SHOP/090",
+  "eb44": "SHOP/089",
+  "f470": "SHOP/097",
+  "f700": "SHOP/098",
+  "f990": "SHOP/099",
+  "fc20": "SHOP/100"
+ },
+ "sprite_palettes": {
+  "X2SPR": [
+   [
+    0,
+    0,
+    0
+   ],
+   [
+    36,
+    36,
+    0
+   ],
+   [
+    109,
+    73,
+    0
+   ],
+   [
+    219,
+    109,
+    0
+   ],
+   [
+    73,
+    73,
+    109
+   ],
+   [
+    109,
+    109,
+    146
+   ],
+   [
+    146,
+    146,
+    182
+   ],
+   [
+    255,
+    219,
+    255
+   ],
+   [
+    182,
+    182,
+    219
+   ],
+   [
+    36,
+    36,
+    73
+   ],
+   [
+    0,
+    0,
+    36
+   ],
+   [
+    73,
+    0,
+    0
+   ],
+   [
+    109,
+    0,
+    0
+   ],
+   [
+    146,
+    36,
+    0
+   ],
+   [
+    255,
+    182,
+    0
+   ],
+   [
+    182,
+    73,
+    36
+   ]
+  ],
+  "X2WEAPS": [
+   [
+    0,
+    0,
+    0
+   ],
+   [
+    36,
+    36,
+    0
+   ],
+   [
+    109,
+    73,
+    0
+   ],
+   [
+    219,
+    109,
+    0
+   ],
+   [
+    73,
+    73,
+    109
+   ],
+   [
+    109,
+    109,
+    146
+   ],
+   [
+    146,
+    146,
+    182
+   ],
+   [
+    255,
+    219,
+    255
+   ],
+   [
+    182,
+    182,
+    219
+   ],
+   [
+    36,
+    36,
+    73
+   ],
+   [
+    0,
+    0,
+    36
+   ],
+   [
+    73,
+    0,
+    0
+   ],
+   [
+    109,
+    0,
+    0
+   ],
+   [
+    146,
+    36,
+    0
+   ],
+   [
+    255,
+    182,
+    0
+   ],
+   [
+    182,
+    73,
+    36
+   ]
+  ],
+  "SHOP": [
+   [
+    0,
+    0,
+    0
+   ],
+   [
+    255,
+    182,
+    109
+   ],
+   [
+    255,
+    146,
+    73
+   ],
+   [
+    219,
+    109,
+    73
+   ],
+   [
+    73,
+    73,
+    109
+   ],
+   [
+    109,
+    109,
+    146
+   ],
+   [
+    146,
+    146,
+    182
+   ],
+   [
+    255,
+    219,
+    255
+   ],
+   [
+    182,
+    182,
+    219
+   ],
+   [
+    36,
+    36,
+    73
+   ],
+   [
+    0,
+    0,
+    36
+   ],
+   [
+    73,
+    0,
+    0
+   ],
+   [
+    109,
+    0,
+    0
+   ],
+   [
+    146,
+    36,
+    0
+   ],
+   [
+    255,
+    182,
+    0
+   ],
+   [
+    182,
+    73,
+    36
+   ]
+  ]
+ }
+}
