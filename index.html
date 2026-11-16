@@ -93,23 +93,43 @@ body {
 		<link id="-gd-engine-icon" rel="icon" type="image/png" href="index.icon.png" />
 <link rel="apple-touch-icon" href="index.apple-touch-icon.png"/>
 <style>
-#x2touch{position:fixed;inset:0;pointer-events:none;z-index:10;display:none;font-family:sans-serif}
+#x2touch{position:fixed;inset:0;pointer-events:none;z-index:10;display:none}
+#x2touch .b{position:absolute;pointer-events:auto;touch-action:none;user-select:none;-webkit-user-select:none;border-radius:50%;box-sizing:border-box;display:flex;align-items:center;justify-content:center}
 #x2left{position:absolute;left:0;top:0;width:50%;height:100%;pointer-events:auto;touch-action:none}
-#x2base{position:absolute;width:30vmin;height:30vmin;margin:-15vmin;border-radius:50%;background:rgba(170,160,220,0.18);border:2px solid rgba(220,215,255,0.4);display:none;pointer-events:none}
-#x2knob{position:absolute;left:50%;top:50%;width:13vmin;height:13vmin;margin:-6.5vmin;border-radius:50%;background:rgba(235,230,255,0.45);pointer-events:none}
-#x2touch .b{position:absolute;pointer-events:auto;touch-action:none;user-select:none;-webkit-user-select:none;border-radius:50%;background:rgba(170,160,220,0.22);border:2px solid rgba(220,215,255,0.45);color:rgba(255,255,255,0.8);display:flex;align-items:center;justify-content:center;font-weight:bold}
-#x2touch .b.on{background:rgba(200,190,255,0.55)}
-#x2fire{right:5vmin;bottom:6vmin;width:24vmin;height:24vmin;font-size:5vmin}
-#x2dive{left:50%;bottom:4vmin;width:16vmin;height:16vmin;margin-left:-8vmin;font-size:3.5vmin;display:none !important}
-#x2dive.ready{display:flex !important}
-#x2pause{right:3vmin;top:3vmin;width:10vmin;height:10vmin;font-size:3.5vmin}
+#x2base{position:absolute;left:17vmin;top:calc(100% - 17vmin);width:22vmin;height:22vmin;margin:-11vmin;border-radius:50%;box-sizing:border-box;background:rgba(170,160,220,0.13);border:2px solid rgba(220,215,255,0.35);pointer-events:none}
+#x2base.on{background:rgba(170,160,220,0.22);border-color:rgba(220,215,255,0.55)}
+#x2knob{position:absolute;left:50%;top:50%;width:9vmin;height:9vmin;margin:-4.5vmin;border-radius:50%;background:rgba(235,230,255,0.4)}
+#x2touch #x2fire{right:6vmin;bottom:7vmin;width:17vmin;height:17vmin;background:rgba(235,70,70,0.3);border:2px solid rgba(255,150,150,0.5)}
+#x2touch #x2fire.on{background:rgba(255,90,90,0.6)}
+#x2touch #x2dive{right:26vmin;bottom:4vmin;width:11vmin;height:11vmin;background:rgba(70,210,110,0.3);border:2px solid rgba(150,255,170,0.5);display:none}
+#x2touch #x2dive.ready{display:flex}
+#x2touch #x2dive.on{background:rgba(90,235,130,0.6)}
+#x2touch #x2pause{right:3vmin;top:3vmin;width:8vmin;height:8vmin;background:rgba(170,160,220,0.13);border:2px solid rgba(220,215,255,0.35)}
+#x2touch #x2pause i{display:block;width:1vmin;height:3vmin;margin:0 0.5vmin;background:rgba(255,255,255,0.7)}
+#x2pad{position:absolute;left:6vmin;bottom:6vmin;width:24vmin;height:24vmin;display:none}
+#x2touch #x2pad .b{width:8vmin;height:8vmin;border-radius:1.5vmin;background:rgba(170,160,220,0.16);border:2px solid rgba(220,215,255,0.4)}
+#x2touch #x2pad .b.on{background:rgba(200,190,255,0.5)}
+#x2pad .b i{width:0;height:0;border:1.6vmin solid transparent}
+#x2touch #x2u{left:8vmin;top:0}
+#x2touch #x2d{left:8vmin;bottom:0}
+#x2touch #x2l{left:0;top:8vmin}
+#x2touch #x2r{right:0;top:8vmin}
+#x2u i{border-bottom:2.2vmin solid rgba(255,255,255,0.7) !important;margin-top:-1.4vmin}
+#x2d i{border-top:2.2vmin solid rgba(255,255,255,0.7) !important;margin-bottom:-1.4vmin}
+#x2l i{border-right:2.2vmin solid rgba(255,255,255,0.7) !important;margin-left:-1.4vmin}
+#x2r i{border-left:2.2vmin solid rgba(255,255,255,0.7) !important;margin-right:-1.4vmin}
+#x2touch.menu #x2left,#x2touch.menu #x2base,#x2touch.menu #x2pause{display:none}
+#x2touch.menu #x2pad{display:block}
 </style>
 <script>
 (function () {
-	// remake : touch controls in the browser, shown on touch screens only. The left half is
-	// a joystick that appears where the thumb lands, FIRE on the right (held, the game's own
-	// autofire), DIVE in the middle while a dive is left (the game tells it through
-	// window.x2dive), P pauses. They send the game the keyboard's keys through the canvas.
+	// remake : touch controls in the browser, shown on touch screens only, without text.
+	// In a level : a joystick (the left half, always shown at the lower left, moved where
+	// the thumb lands), the soft red button fires (held, the game's own autofire), the soft
+	// green one dives while a dive is left, the two bars pause. On the menus and in the
+	// shop : four arrows (a tap a step, held they repeat) and the red button chooses.
+	// The game tells which through window.x2state(level, dives). The buttons send the
+	// keyboard's keys (arrows, Space, Enter, P) through the canvas.
 	var touch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
 	if (!touch || !window.matchMedia('(pointer: coarse)').matches) return;
 	var KEYS = {ArrowUp: ['ArrowUp', 38], ArrowDown: ['ArrowDown', 40], ArrowLeft: ['ArrowLeft', 37], ArrowRight: ['ArrowRight', 39], Space: [' ', 32], Enter: ['Enter', 13], KeyP: ['p', 80]};
@@ -122,20 +142,34 @@ body {
 		var k = KEYS[code];
 		canvas.dispatchEvent(new KeyboardEvent(on ? 'keydown' : 'keyup', {code: code, key: k[0], keyCode: k[1], which: k[1], bubbles: true, cancelable: true}));
 	}
-	function button(el, code) {
-		var id = null;
+	function button(el, code, repeat) {
+		var id = null, timer = null;
+		function stop() {
+			if (timer) clearTimeout(timer);
+			timer = null;
+		}
+		function pulse() {
+			// held on the menus : released for a moment and pressed again, a step each time
+			send(code, false);
+			timer = setTimeout(function () {
+				send(code, true);
+				timer = setTimeout(pulse, 90);
+			}, 110);
+		}
 		el.addEventListener('touchstart', function (e) {
 			e.preventDefault();
 			if (id !== null) return;
 			id = e.changedTouches[0].identifier;
 			el.classList.add('on');
 			send(code, true);
+			if (repeat) timer = setTimeout(pulse, 400);
 		}, {passive: false});
 		function release(e) {
 			e.preventDefault();
 			for (var i = 0; i < e.changedTouches.length; i++) {
 				if (e.changedTouches[i].identifier === id) {
 					id = null;
+					stop();
 					el.classList.remove('on');
 					send(code, false);
 				}
@@ -165,7 +199,7 @@ body {
 			cy = t.clientY;
 			base.style.left = cx + 'px';
 			base.style.top = cy + 'px';
-			base.style.display = 'block';
+			base.classList.add('on');
 			set(0, 0);
 		}, {passive: false});
 		zone.addEventListener('touchmove', function (e) {
@@ -181,26 +215,52 @@ body {
 				if (e.changedTouches[i].identifier === id) {
 					id = null;
 					set(0, 0);
-					base.style.display = 'none';
+					base.style.left = '';
+					base.style.top = '';
+					base.classList.remove('on');
 				}
 			}
 		}
 		zone.addEventListener('touchend', end, {passive: false});
 		zone.addEventListener('touchcancel', end, {passive: false});
+		return function () {
+			if (id !== null) {
+				id = null;
+				set(0, 0);
+				base.style.left = '';
+				base.style.top = '';
+				base.classList.remove('on');
+			}
+		};
 	}
-	window.x2dive = function (n) {
-		var el = document.getElementById('x2dive');
-		if (el) el.classList.toggle('ready', n > 0);
+	var reset = null;
+	window.x2state = function (level, dives) {
+		var box = document.getElementById('x2touch');
+		if (!box) return;
+		var menu = !level;
+		if (menu !== box.classList.contains('menu')) {
+			if (reset) reset();
+			['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].forEach(function (c) { send(c, false); });
+		}
+		box.classList.toggle('menu', menu);
+		document.getElementById('x2dive').classList.toggle('ready', !!level && dives > 0);
 	};
 	window.addEventListener('DOMContentLoaded', function () {
 		var box = document.createElement('div');
 		box.id = 'x2touch';
-		box.innerHTML = '<div id=x2left></div><div id=x2base><div id=x2knob></div></div><div class=b id=x2dive>DIVE</div><div class=b id=x2fire>FIRE</div><div class=b id=x2pause>P</div>';
+		box.className = 'menu';
+		box.innerHTML = '<div id=x2left></div><div id=x2base><div id=x2knob></div></div>' +
+			'<div id=x2pad><div class=b id=x2u><i></i></div><div class=b id=x2d><i></i></div><div class=b id=x2l><i></i></div><div class=b id=x2r><i></i></div></div>' +
+			'<div class=b id=x2dive></div><div class=b id=x2fire></div><div class=b id=x2pause><i></i><i></i></div>';
 		document.body.appendChild(box);
-		stick(document.getElementById('x2left'), document.getElementById('x2base'), document.getElementById('x2knob'));
-		button(document.getElementById('x2fire'), 'Space');
-		button(document.getElementById('x2dive'), 'Enter');
-		button(document.getElementById('x2pause'), 'KeyP');
+		reset = stick(document.getElementById('x2left'), document.getElementById('x2base'), document.getElementById('x2knob'));
+		button(document.getElementById('x2u'), 'ArrowUp', true);
+		button(document.getElementById('x2d'), 'ArrowDown', true);
+		button(document.getElementById('x2l'), 'ArrowLeft', true);
+		button(document.getElementById('x2r'), 'ArrowRight', true);
+		button(document.getElementById('x2fire'), 'Space', false);
+		button(document.getElementById('x2dive'), 'Enter', false);
+		button(document.getElementById('x2pause'), 'KeyP', false);
 		box.style.display = 'block';
 	});
 })();
@@ -233,7 +293,7 @@ body {
 
 		<script src="index.js"></script>
 		<script>
-const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":15009772,"index.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
+const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":15009884,"index.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
 const GODOT_THREADS_ENABLED = false;
 const engine = new Engine(GODOT_CONFIG);
 
