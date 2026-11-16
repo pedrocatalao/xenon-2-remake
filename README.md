@@ -30,7 +30,7 @@ The opening screen offers two editions, and **F1** switches between them at any 
 
 | | ORIGINAL 1989 | ENHANCED 2026 |
 |---|---|---|
-| Picture | the original 320 × 200 picture, enlarged | every picture drawn sharp at the resolution of your screen |
+| Picture | original 320 × 200 | every picture drawn sharp at the resolution of your screen |
 | Graphics | the original pixels | smooth high resolution graphics |
 | Amiga music | the in-game arrangement | the full arrangement of the original release |
 
