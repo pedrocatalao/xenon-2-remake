@@ -83,4 +83,4 @@ Open the folder in **Godot 4.7.2** (standard build) and run it, or export it fro
 
 ## Disclaimer
 
-This is a free, non-commercial fan project, made out of love for the original game. It is not affiliated with, endorsed by or connected in any way to The Bitmap Brothers, Image Works, Mirrorsoft, Bomb the Bass, David Whittaker or any current owner of Xenon 2: Megablast. All names, trademarks, graphics, music and other material of the original game belong to their respective owners. Nothing here is for sale.
+This is a free, non-commercial fan project, made out of love for the original game. It is not affiliated with, endorsed by or connected in any way to The Bitmap Brothers, Image Works, [Mirrorsoft](https://en.wikipedia.org/wiki/Mirrorsoft), Bomb the Bass, David Whittaker or any current owner of Xenon 2: Megablast. All names, trademarks, graphics, music and other material of the original game belong to their respective owners. Nothing here is for sale.
