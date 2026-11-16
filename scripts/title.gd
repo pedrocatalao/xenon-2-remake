@@ -394,6 +394,10 @@ func _menu() -> void:
 	# others, with 1 or 2 players by the line (0x5c09, main.start_players).
 
 	credits = 3
+
+	# ENHANCED : START AT LEVEL shows the furthest level reached first
+
+	main.start_level = maxi(main.reached_level, 1)
 	_new_stars()
 	await _show_once(0xc, SELECT)
 	main.fire_event = false
@@ -429,8 +433,19 @@ func _menu() -> void:
 		main.start_level = clampi(main.start_level, 1, maxi(main.reached_level, 1))
 
 		if choose_level:
-			var line := "START AT LEVEL %d" % main.start_level
-			_text_at((320 - 16 * line.length()) / 2, 0x28, line, medium, MEDIUM_ROWS)
+
+			# the arrows (the large font's, the medium one has none) show which way the number
+			# can still change with left and right
+
+			var line := "START AT LEVEL   %d  " % main.start_level
+			var x0 := (320 - 16 * line.length()) / 2
+			_text_at(x0, 0x28, line, medium, MEDIUM_ROWS)
+
+			if main.start_level > 1:
+				_text_at(x0 + 16 * 15, 0x28 - 4, "<", large, LARGE_ROWS)
+
+			if main.start_level < main.reached_level:
+				_text_at(x0 + 16 * 19, 0x28 - 4, ">", large, LARGE_ROWS)
 
 		_stars()
 		await _frame()
@@ -511,6 +526,11 @@ func _clear() -> void:
 	# f29:12fd
 
 	hd.fill(picture, colours[0])
+
+	# ENHANCED : no smooth Amiga logo left over (fire on the Amiga credits shrinks it, then
+	# the menu clears with this one)
+
+	overlay_size = 0.0
 
 
 func _text(y: int, line: String, font: Array[Image], rows: int) -> void:
