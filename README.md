@@ -4,6 +4,15 @@
 
 A faithful remake of **Xenon 2 Megablast** (The Bitmap Brothers, 1989) for modern computers, made with Godot, together with an **ENHANCED** edition that brings the game to high resolution screens.
 
+## Download
+
+Latest release: **[1.0](https://github.com/vpapanik/xenon-2-remake/releases/latest)**
+
+| Platform | File |
+|---|---|
+| Windows (x86_64) | [Xenon2Remake-1.0-windows-x86_64.zip](https://github.com/vpapanik/xenon-2-remake/releases/download/v1.0/Xenon2Remake-1.0-windows-x86_64.zip) : unzip and run `Xenon2Remake.exe` |
+| Linux (x86_64) | [Xenon2Remake-1.0-linux-x86_64.tar.gz](https://github.com/vpapanik/xenon-2-remake/releases/download/v1.0/Xenon2Remake-1.0-linux-x86_64.tar.gz) : extract and run `./Xenon2Remake.x86_64` |
+
 ## The game
 
 The complete game, as it was in 1989:
@@ -38,7 +47,7 @@ The game mechanics of the original Amiga and PC versions of Xenon 2 are identica
 
 ## Building
 
-Open the folder in **Godot 4.7.2** (standard build) and run it, or export it from *Project > Export* for Windows or Linux. Ready builds are on the Releases page.
+Open the folder in **Godot 4.7.2** (standard build) and run it, or export it from *Project > Export* for Windows or Linux. Ready builds are on the [Releases](https://github.com/vpapanik/xenon-2-remake/releases) page.
 
 ## Controls
 
