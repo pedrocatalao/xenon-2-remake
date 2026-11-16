@@ -702,6 +702,10 @@ static var custom_keys := {}
 const PROGRESS_PATH := "user://progress.cfg"
 static var reached_level := 0
 static var start_level := 1
+
+# a test start (--level or --scroll) : it goes first, START AT LEVEL is not offered
+
+var test_start := false
 var last_key := 0
 
 # Amiga graphics (tools/x2amiga.py) : the same tiles and sprites as the PC, plus the level's
@@ -927,6 +931,7 @@ func _ready() -> void:
 			# test option : start the level at this scroll, with the waves and wall objects
 			# above it already passed
 
+			test_start = true
 			var value := arg.trim_prefix("--scroll=")
 			scroll = value.hex_to_int() if value.begins_with("0x") else int(value)
 			scroll_max = scroll
@@ -957,6 +962,7 @@ func _ready() -> void:
 
 			fire_until = int(arg.trim_prefix("--fire-until="))
 		elif arg.begins_with("--level="):
+			test_start = true
 
 			# test option : start at that level, as a new game
 
@@ -6889,9 +6895,13 @@ func _draw_boss() -> void:
 			var tile := absi(word)
 			var at := Vector2(112 + column * 16, by + row * 16)
 
+			# ENHANCED : the mouth rows (5 and 6) always masked. The original draws the
+			# opaque mouth tiles (cs:0x76e4) with their black, a box over the background
+			# as the guardian moves.
+
 			if boss["flash"]:
 				world.draw_texture(_tile_flash(tile), at)
-			elif word < 0:
+			elif word < 0 or (HD_TEXTURE.on and row >= 5):
 				world.draw_texture(_tile_masked(tile), at)
 			else:
 				var origin := _tile_origin(tile)

@@ -259,7 +259,7 @@ func _run() -> void:
 
 	# ENHANCED : a game started at a level reached before (main.start_at_level loads it)
 
-	if main.HD_TEXTURE.on and main.start_level > 1 and main.start_level <= main.reached_level:
+	if main.HD_TEXTURE.on and not main.test_start and main.start_level > 1 and main.start_level <= main.reached_level:
 		running = false
 		main.start_at_level(main.start_level)
 		return
@@ -429,7 +429,7 @@ func _menu() -> void:
 		# ENHANCED : once a level after the first was reached, the level a new game starts
 		# at, between SELECT and the first line, changed with left and right
 
-		var choose_level: bool = main.HD_TEXTURE.on and main.reached_level > 1
+		var choose_level: bool = main.HD_TEXTURE.on and main.reached_level > 1 and not main.test_start
 		main.start_level = clampi(main.start_level, 1, maxi(main.reached_level, 1))
 
 		if choose_level:
@@ -437,15 +437,17 @@ func _menu() -> void:
 			# the arrows (the large font's, the medium one has none) show which way the number
 			# can still change with left and right
 
-			var line := "START AT LEVEL   %d  " % main.start_level
-			var x0 := (320 - 16 * line.length()) / 2
-			_text_at(x0, 0x28, line, medium, MEDIUM_ROWS)
+			# START AT LEVEL, a space, then arrow, number, arrow side by side, all centred
+
+			var x0 := (320 - 16 * 18) / 2
+			_text_at(x0, 0x28, "START AT LEVEL", medium, MEDIUM_ROWS)
+			_text_at(x0 + 16 * 16, 0x28, str(main.start_level), medium, MEDIUM_ROWS)
 
 			if main.start_level > 1:
-				_text_at(x0 + 16 * 15, 0x28 - 4, "<", large, LARGE_ROWS)
+				_text_at(x0 + 16 * 15 - 6, 0x28 - 4, "<", large, LARGE_ROWS)
 
 			if main.start_level < main.reached_level:
-				_text_at(x0 + 16 * 19, 0x28 - 4, ">", large, LARGE_ROWS)
+				_text_at(x0 + 16 * 17 + 6, 0x28 - 4, ">", large, LARGE_ROWS)
 
 		_stars()
 		await _frame()

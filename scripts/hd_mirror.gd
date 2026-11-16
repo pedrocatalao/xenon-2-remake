@@ -48,9 +48,22 @@ func show(large: ImageTexture, base: Image) -> void:
 		large.update(twin[base])
 
 
+func _margin(src: Image) -> int:
+
+	# an NB2 frame that reaches past the original one (x2nb2.py) : the margin around it, in
+	# large pixels
+
+	if not twin.has(src):
+		return 0
+
+	var extra: int = twin[src].get_width() - src.get_width() * k
+	return extra / 2 if extra > 0 and extra == twin[src].get_height() - src.get_height() * k else 0
+
+
 func _part(src: Image, rect: Rect2i) -> Image:
 	if twin.has(src):
-		return twin[src].get_region(Rect2i(rect.position * k, rect.size * k))
+		var m := _margin(src)
+		return twin[src].get_region(Rect2i(rect.position * k + Vector2i(m, m), rect.size * k))
 
 	var part := src.get_region(rect)
 	part.resize(rect.size.x * k, rect.size.y * k, Image.INTERPOLATE_NEAREST)
@@ -68,9 +81,22 @@ func blit_rect(dst: Image, src: Image, rect: Rect2i, at: Vector2i) -> void:
 func blend_rect(dst: Image, src: Image, rect: Rect2i, at: Vector2i) -> void:
 	dst.blend_rect(src, rect, at)
 
-	if twin.has(dst):
+	if not twin.has(dst):
+		return
+
+	var m := _margin(src)
+
+	if m == 0:
 		var part := _part(src, rect)
 		twin[dst].blend_rect(part, Rect2i(Vector2i.ZERO, part.get_size()), at * k)
+		return
+
+	# with the margin on the sides where the part ends with the frame
+
+	var lo := Vector2i(m if rect.position.x <= 0 else 0, m if rect.position.y <= 0 else 0)
+	var hi := Vector2i(m if rect.end.x >= src.get_width() else 0, m if rect.end.y >= src.get_height() else 0)
+	var region := Rect2i(rect.position * k + Vector2i(m, m) - lo, rect.size * k + lo + hi)
+	twin[dst].blend_rect(twin[src], region, at * k - lo)
 
 
 func fill(dst: Image, colour: Color) -> void:

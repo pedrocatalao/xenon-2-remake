@@ -20,6 +20,7 @@ import os
 import sys
 
 from PIL import Image
+from scipy import ndimage
 
 def named(key, prefix):
 
@@ -50,6 +51,60 @@ def keep_alpha(new, old):
     return new
 
 
+# The NB2 sprites are drawn on black and may reach past the xBRZ outline (the rings of the
+# orbiting sphere, X2WEAPS 012-019, were cut, in the shop too) : nothing of them is cut,
+# their transparency is the xBRZ one joined with the NB2 picture's own (black is
+# transparent), and where only the NB2 one shows, the colour is taken off the black so a
+# glow lightens what is behind it. Not for frames drawn over a picture instead of black
+# (the shopkeeper's eyes go on his face).
+
+XBRZ_ALPHA = {'08 shop/frames 087-090'}
+
+
+def own_alpha(new, old):
+    new = keep_alpha(new, old)
+
+    if new.mode != 'RGBA':
+        return new
+
+    rgba = np.asarray(new).astype(float)
+    own = np.clip((rgba[..., :3].max(2) - 14) / 24, 0, 1)
+    extra = own > rgba[..., 3] / 255
+    rgba[extra, :3] = np.clip(rgba[extra, :3] / np.maximum(own[extra], 1 / 255)[:, None], 0, 255)
+    rgba[extra, 3] = own[extra] * 255
+    return Image.fromarray(rgba.round().astype('uint8'), 'RGBA')
+
+
+# What an NB2 frame draws past its box is kept in a margin of one original pixel (MARGIN
+# large pixels) around it, read by hd_texture.gd and hd_mirror.gd : only what joins the
+# frame's own drawing (not a neighbour's), and the margin only when something is in it.
+
+MARGIN = 4
+
+
+def framed(nb2, xbrz, x, y, w, h):
+    m = MARGIN
+    box = (x - m, y - m, x + w + m, y + h + m)
+    frame = own_alpha(nb2.crop(box), xbrz.crop(box))
+
+    if frame.mode != 'RGBA':
+        return frame.crop((m, m, m + w, m + h))
+
+    rgba = np.array(frame)
+    seen = rgba[..., 3] > 25
+    labels, count = ndimage.label(seen, structure=np.ones((3, 3)))
+    inner = np.unique(labels[m:m + h, m:m + w])
+    keep = np.isin(labels, inner[inner > 0])
+    ring = np.ones(seen.shape, bool)
+    ring[m:m + h, m:m + w] = False
+    rgba[ring & ~keep] = 0
+
+    if not rgba[ring, 3].any():
+        return Image.fromarray(rgba[m:m + h, m:m + w], 'RGBA')
+
+    return Image.fromarray(rgba, 'RGBA')
+
+
 for folder, dirs, files in os.walk(ENHANCED):
     for file in files:
         if not (file.startswith('NB2_') and file.endswith('.png')):
@@ -67,7 +122,12 @@ for folder, dirs, files in os.walk(ENHANCED):
 
         if 'single' in entry:
             target = os.path.join(HD, entry['single'])
-            keep_alpha(nb2, Image.open(target)).save(target)
+
+            if target.endswith('_tiles.png') or key in XBRZ_ALPHA:
+                keep_alpha(nb2, Image.open(target)).save(target)
+            else:
+                own_alpha(nb2, xbrz).save(target)
+
             done += 1
 
             # a tile sheet : the tiles that changed also into its masked and Amiga sheets,
@@ -100,7 +160,10 @@ for folder, dirs, files in os.walk(ENHANCED):
             for path, x, y, w, h in entry['cells']:
                 target = os.path.join(HD, path)
                 frame = nb2.crop((x * k, y * k, (x + w) * k, (y + h) * k))
-                keep_alpha(frame, Image.open(target)).save(target)
+                if key in XBRZ_ALPHA:
+                    keep_alpha(frame, Image.open(target)).save(target)
+                else:
+                    framed(nb2, xbrz, x * k, y * k, w * k, h * k).save(target)
                 done += 1
 
         print(key, ': in the game')

@@ -14,13 +14,13 @@ This project brings it back with love and respect: a faithful remake for modern 
 
 ## Download
 
-Latest release: **[1.0.4](https://github.com/vpapanik/xenon-2-remake/releases/latest)**
+Latest release: **[1.0.5](https://github.com/vpapanik/xenon-2-remake/releases/latest)**
 
 | Platform | File |
 |---|---|
-| Windows (x86_64) | [Xenon2Remake-1.0.4-windows-x86_64.zip](https://github.com/vpapanik/xenon-2-remake/releases/download/v1.0.4/Xenon2Remake-1.0.4-windows-x86_64.zip) : unzip and run `Xenon2Remake.exe` |
-| Linux (x86_64) | [Xenon2Remake-1.0.4-linux-x86_64.tar.gz](https://github.com/vpapanik/xenon-2-remake/releases/download/v1.0.4/Xenon2Remake-1.0.4-linux-x86_64.tar.gz) : extract and run `./Xenon2Remake.x86_64` |
-| Web | [Xenon2Remake-1.0.4-web.zip](https://github.com/vpapanik/xenon-2-remake/releases/download/v1.0.4/Xenon2Remake-1.0.4-web.zip) : unzip and serve the folder with any web server, then open it in the browser |
+| Windows (x86_64) | [Xenon2Remake-1.0.5-windows-x86_64.zip](https://github.com/vpapanik/xenon-2-remake/releases/download/v1.0.5/Xenon2Remake-1.0.5-windows-x86_64.zip) : unzip and run `Xenon2Remake.exe` |
+| Linux (x86_64) | [Xenon2Remake-1.0.5-linux-x86_64.tar.gz](https://github.com/vpapanik/xenon-2-remake/releases/download/v1.0.5/Xenon2Remake-1.0.5-linux-x86_64.tar.gz) : extract and run `./Xenon2Remake.x86_64` |
+| Web | [Xenon2Remake-1.0.5-web.zip](https://github.com/vpapanik/xenon-2-remake/releases/download/v1.0.5/Xenon2Remake-1.0.5-web.zip) : unzip and serve the folder with any web server, then open it in the browser |
 
 ## The game
 
