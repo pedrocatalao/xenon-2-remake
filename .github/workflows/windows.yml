@@ -1,0 +1,50 @@
+name: Windows
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  release:
+    types: [published]
+
+permissions:
+  contents: write  # to attach the package to a release
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Windows (x86_64)
+    # Godot exports for Windows from Linux, icon and version information included.
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Export
+        id: godot
+        uses: ./.github/actions/godot-export
+        with:
+          preset: Windows
+          template: windows_release_x86_64.exe
+          output: build/windows/Xenon2Remake.exe
+
+      - name: Check what was built
+        run: file build/windows/Xenon2Remake.exe | tee /dev/stderr | grep -q 'PE32+ executable (GUI) x86-64'
+
+      - name: Package
+        run: zip -j "Xenon2Remake-${{ steps.godot.outputs.version }}-windows-x86_64.zip" build/windows/Xenon2Remake.exe
+
+      - name: Attach to the release
+        if: github.event_name == 'release'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "${{ github.event.release.tag_name }}" "Xenon2Remake-${{ steps.godot.outputs.version }}-windows-x86_64.zip" --clobber
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Xenon2Remake-${{ steps.godot.outputs.version }}-windows-x86_64
+          path: Xenon2Remake-${{ steps.godot.outputs.version }}-windows-x86_64.zip
+          if-no-files-found: error

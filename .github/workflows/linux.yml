@@ -1,0 +1,58 @@
+name: Linux
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  release:
+    types: [published]
+
+permissions:
+  contents: write  # to attach the package to a release
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Linux (x86_64)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Export
+        id: godot
+        uses: ./.github/actions/godot-export
+        with:
+          preset: Linux
+          template: linux_release.x86_64
+          output: build/linux/Xenon2Remake.x86_64
+
+      - name: Check what was built
+        run: file build/linux/Xenon2Remake.x86_64 | tee /dev/stderr | grep -q 'ELF 64-bit.*x86-64'
+
+      # The game itself runs for 600 frames with no window and no sound: every scene and
+      # script it starts must load without an error.
+      - name: Smoke test
+        timeout-minutes: 3
+        run: |
+          build/linux/Xenon2Remake.x86_64 --headless --quit-after 600 2>&1 | tee smoke.log
+          test "${PIPESTATUS[0]}" -eq 0
+          ! grep -E '^(SCRIPT )?ERROR' smoke.log
+
+      - name: Package
+        run: tar czf "Xenon2Remake-${{ steps.godot.outputs.version }}-linux-x86_64.tar.gz" -C build/linux Xenon2Remake.x86_64
+
+      - name: Attach to the release
+        if: github.event_name == 'release'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "${{ github.event.release.tag_name }}" "Xenon2Remake-${{ steps.godot.outputs.version }}-linux-x86_64.tar.gz" --clobber
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Xenon2Remake-${{ steps.godot.outputs.version }}-linux-x86_64
+          path: Xenon2Remake-${{ steps.godot.outputs.version }}-linux-x86_64.tar.gz
+          if-no-files-found: error

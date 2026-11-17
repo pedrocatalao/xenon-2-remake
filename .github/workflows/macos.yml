@@ -1,0 +1,66 @@
+name: macOS
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  release:
+    types: [published]
+
+permissions:
+  contents: write  # to attach the package to a release
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: macOS (universal)
+    # Exported on a Mac so Apple's own tools can check the result.
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Export
+        id: godot
+        uses: ./.github/actions/godot-export
+        with:
+          preset: macOS
+          template: macos.zip
+          output: build/macos/Xenon 2 remake.app
+
+      # One application for Apple Silicon and Intel, signed without a certificate (ad hoc).
+      - name: Check the application
+        run: |
+          bin="build/macos/Xenon 2 remake.app/Contents/MacOS/Xenon 2 remake"
+          lipo -archs "$bin" | tee /dev/stderr | grep -q x86_64
+          lipo -archs "$bin" | grep -q arm64
+          codesign --verify --deep --strict "build/macos/Xenon 2 remake.app"
+
+      # The game itself runs for 600 frames with no window and no sound: every scene and
+      # script it starts must load without an error.
+      - name: Smoke test
+        timeout-minutes: 3
+        run: |
+          "build/macos/Xenon 2 remake.app/Contents/MacOS/Xenon 2 remake" --headless --quit-after 600 2>&1 | tee smoke.log
+          test "${PIPESTATUS[0]}" -eq 0
+          ! grep -E '^(SCRIPT )?ERROR' smoke.log
+
+      - name: Package
+        run: |
+          cd build/macos
+          ditto -c -k --sequesterRsrc --keepParent "Xenon 2 remake.app" "../../Xenon2Remake-${{ steps.godot.outputs.version }}-macos-universal.zip"
+
+      - name: Attach to the release
+        if: github.event_name == 'release'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "${{ github.event.release.tag_name }}" "Xenon2Remake-${{ steps.godot.outputs.version }}-macos-universal.zip" --clobber
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Xenon2Remake-${{ steps.godot.outputs.version }}-macos-universal
+          path: Xenon2Remake-${{ steps.godot.outputs.version }}-macos-universal.zip
+          if-no-files-found: error
