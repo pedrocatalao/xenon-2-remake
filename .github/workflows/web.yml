@@ -1,0 +1,53 @@
+name: Web
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  release:
+    types: [published]
+
+permissions:
+  contents: write  # to attach the package to a release
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Web
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+
+      # The preset has thread support off, so it runs on any web server without the
+      # cross-origin isolation headers threads would need (GitHub Pages included).
+      - name: Export
+        id: godot
+        uses: ./.github/actions/godot-export
+        with:
+          preset: Web
+          template: web_nothreads_release.zip
+          output: build/web/index.html
+
+      - name: Check what was built
+        run: |
+          for f in index.html index.js index.wasm index.pck; do test -s "build/web/$f" || { echo "missing $f"; exit 1; }; done
+          grep -q x2touch build/web/index.html  # the touch controls from the preset's head include
+
+      - name: Package
+        run: cd build/web && zip -r "../../Xenon2Remake-${{ steps.godot.outputs.version }}-web.zip" .
+
+      - name: Attach to the release
+        if: github.event_name == 'release'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "${{ github.event.release.tag_name }}" "Xenon2Remake-${{ steps.godot.outputs.version }}-web.zip" --clobber
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Xenon2Remake-${{ steps.godot.outputs.version }}-web
+          path: Xenon2Remake-${{ steps.godot.outputs.version }}-web.zip
+          if-no-files-found: error
