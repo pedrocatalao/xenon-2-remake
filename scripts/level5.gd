@@ -522,7 +522,7 @@ func draw_enemy(enemy: Dictionary) -> void:
 		_:
 			_draw_other(enemy)
 
-	enemy["flash"] = false
+	main.flash_drawn(enemy)
 
 
 func _draw_other(enemy: Dictionary) -> void:
@@ -1002,7 +1002,7 @@ func _draw_middle_head(head: Dictionary) -> void:
 	grid[3][2] = m[4]
 	grid[3][3] = m[5]
 	main._draw_grid(grid, 112, head["y"], head["flash"])
-	head["flash"] = false
+	main.flash_drawn(head)
 
 
 func _middle_turret_hit(part: Dictionary, damage: int) -> void:
@@ -1246,7 +1246,7 @@ func _draw_boss_head(head: Dictionary) -> void:
 
 	if head["flash"]:
 		main._draw_grid(BOSS_GRID, head["x"], head["y"], true)
-		head["flash"] = false
+		main.flash_drawn(head)
 		return
 
 	var m: int = head["mouth"]

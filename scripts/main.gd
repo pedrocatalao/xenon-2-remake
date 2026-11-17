@@ -610,6 +610,23 @@ var fire_until := -1
 var test_nashwan := false
 var time_left := 0.0
 
+# ENHANCED (remake only, F5) : smooth motion. The game still moves everything in whole
+# pixels once a tick (about 18 times a second); the picture is drawn at every frame of the
+# screen, each object and the map between where they were at the last two ticks
+# (smooth_alpha, 0 the one before, 1 the last). On by default, static, so F5 is kept for
+# the next level and game. The positions of the tick before : px, py, pwy in each object,
+# prev_* here. A flash drawn is cleared at the next tick (flash_drawn), as it is drawn
+# more than once.
+
+static var smooth := true
+var smooth_alpha := 1.0
+var prev_scroll := 0
+var prev_drawn_scroll := 0
+var prev_ship := Vector2.ZERO
+var flash_later: Array = []
+var ship_flash_later := false
+const SMOOTH_JUMP := 32
+
 var events: Array = []
 var walls: Array = []
 var paths: Array = []
@@ -696,16 +713,12 @@ var paused := false
 
 static var custom_keys := {}
 
-# ENHANCED (remake only) : the furthest level reached, kept in user://progress.cfg across
-# runs (0 until read), and the level the title menu starts a new game at
+# ENHANCED (remake only, F4) : the picture as on a 4:3 screen of the time (PC VGA), each
+# pixel 20% taller. Off at launch, kept for the next level and game. ORIGINAL keeps square
+# pixels. --four-three turns it on for tests.
 
-const PROGRESS_PATH := "user://progress.cfg"
-static var reached_level := 0
-static var start_level := 1
+static var four_three := false
 
-# a test start (--level or --scroll) : it goes first, START AT LEVEL is not offered
-
-var test_start := false
 var last_key := 0
 
 # Amiga graphics (tools/x2amiga.py) : the same tiles and sprites as the PC, plus the level's
@@ -915,6 +928,8 @@ func _ready() -> void:
 		elif arg == "--original":
 			original = true
 			HD_TEXTURE.on = false
+		elif arg == "--four-three":
+			four_three = true
 		elif arg.begins_with("--shot="):
 			shot_path = arg.trim_prefix("--shot=")
 		elif arg.begins_with("--ticks="):
@@ -931,7 +946,6 @@ func _ready() -> void:
 			# test option : start the level at this scroll, with the waves and wall objects
 			# above it already passed
 
-			test_start = true
 			var value := arg.trim_prefix("--scroll=")
 			scroll = value.hex_to_int() if value.begins_with("0x") else int(value)
 			scroll_max = scroll
@@ -962,8 +976,6 @@ func _ready() -> void:
 
 			fire_until = int(arg.trim_prefix("--fire-until="))
 		elif arg.begins_with("--level="):
-			test_start = true
-
 			# test option : start at that level, as a new game
 
 			level_number = int(arg.trim_prefix("--level="))
@@ -1234,11 +1246,7 @@ void fragment() {
 	ship_box = _box("X2SPR", ship_frame, ship_x, ship_y)
 	_place()
 
-	_read_progress()
-
 	if not next.is_empty():
-		_note_level()
-
 		if shot_path == "":
 			title.loading(level_number)
 		else:
@@ -1282,8 +1290,11 @@ func _process(delta: float) -> void:
 	while time_left >= TICK_SECONDS and not finished:
 		time_left -= TICK_SECONDS
 		_read_input()
+		_remember()
 		_step()
 		_place()
+
+	_smooth_frame()
 
 	# remake, the browser : the touch controls of the page (web/touch.html) are a joystick in
 	# a level, arrows on the menus and in the shop, and show DIVE while a dive is left
@@ -1338,6 +1349,118 @@ func _step() -> void:
 	pc_request = 0
 
 
+func _smoothing() -> bool:
+
+	# smooth motion only while a level plays in ENHANCED
+
+	return smooth and HD_TEXTURE.on and shot_path == "" and not title.running and not shop.running and not paused and map != null
+
+
+func _remember() -> void:
+
+	# before a tick : where everything is now, and the flashes drawn since the last tick
+	# end (drawn more than once while smooth)
+
+	for d in flash_later:
+		d["flash"] = false
+
+	flash_later.clear()
+
+	if ship_flash_later:
+		ship_flash = false
+		ship_flash_later = false
+
+	if not _smoothing():
+		return
+
+	prev_scroll = scroll
+	prev_drawn_scroll = drawn_scroll
+	prev_ship = Vector2(ship_x, ship_y)
+
+	for list in [enemies, effects, launchers, flames, stars]:
+		for d in list:
+			d["px"] = d.get("x", 0)
+			d["py"] = d.get("y", 0)
+
+			if d.has("world_y"):
+				d["pwy"] = d["world_y"]
+
+	if not boss.is_empty():
+		boss["py"] = boss.get("y", 0)
+
+
+func _smooth_frame() -> void:
+
+	# every frame of the screen : how far the picture is between the last two ticks, the
+	# map moved by the part of the scroll not yet shown, the objects drawn again
+
+	if not _smoothing():
+		if smooth_alpha < 1.0 or (map != null and map.position != Vector2.ZERO):
+			smooth_alpha = 1.0
+			map.position = Vector2.ZERO
+			_place()
+
+		return
+
+	smooth_alpha = clampf(time_left / TICK_SECONDS, 0.0, 1.0)
+	map.position = Vector2(0, _limited(drawn_scroll - prev_drawn_scroll))
+	world.queue_redraw()
+	star_layer.queue_redraw()
+
+
+func _limited(step: float) -> float:
+
+	# a move of the last tick, the part not yet shown ; a jump (a new place) is not smoothed
+
+	if absf(step) > SMOOTH_JUMP:
+		return 0.0
+
+	return step * (1.0 - smooth_alpha)
+
+
+func _scroll_lag() -> Vector2:
+
+	# what is fixed on the map : it goes with the scroll
+
+	if smooth_alpha >= 1.0:
+		return Vector2.ZERO
+
+	return Vector2(0, _limited(scroll - prev_scroll))
+
+
+func _lag(d: Dictionary, fixed_x := false, fixed_y := false) -> Vector2:
+
+	# an object : the part of its last move not yet shown (16.16 positions in units of
+	# 65536), with world_y as the scroll moves it
+
+	if smooth_alpha >= 1.0 or not d.has("px"):
+		return Vector2.ZERO
+
+	var dx := float(d["px"] - d.get("x", 0))
+	var dy := float(d["py"] - d.get("y", 0))
+
+	if fixed_x:
+		dx /= 65536.0
+
+	if fixed_y:
+		dy /= 65536.0
+
+	if d.has("pwy") and d.has("world_y"):
+		dy = float(d["pwy"] - prev_scroll) - float(d["world_y"] - scroll)
+
+	return Vector2(_limited(dx), _limited(dy))
+
+
+func flash_drawn(d: Dictionary) -> void:
+
+	# a hit flash has been drawn : cleared now, or at the next tick while smooth
+
+	if _smoothing():
+		flash_later.append(d)
+	else:
+		d["flash"] = false
+
+
 func _title_done() -> void:
 
 	# code 0x5950 : the game's stars are set up again (0x426a), from where the title left
@@ -1361,11 +1484,12 @@ func _size_window() -> void:
 	var scaling := DisplayServer.screen_get_dpi(screen) / 96.0
 	var usable := DisplayServer.screen_get_usable_rect(screen)
 	var times := maxi(1, roundi(4 * scaling))
+	var high := _screen_height()
 
-	while times > 1 and (320 * times > usable.size.x or 200 * times > usable.size.y - 40):
+	while times > 1 and (320 * times > usable.size.x or high * times > usable.size.y - 40):
 		times -= 1
 
-	var size := Vector2i(320 * times, 200 * times)
+	var size := Vector2i(320 * times, high * times)
 	DisplayServer.window_set_size(size)
 	DisplayServer.window_set_position(usable.position + (usable.size - size) / 2)
 
@@ -2604,10 +2728,39 @@ func _set_enhanced(on: bool) -> void:
 		_amiga_tune(tune_volume)
 
 	get_tree().root.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS if on else Window.CONTENT_SCALE_MODE_VIEWPORT
+	_set_aspect()
 
 	for canvas in [map, world, star_layer, overlay, hud, hud_values]:
 		if canvas != null:
 			canvas.queue_redraw()
+
+
+func _screen_height() -> int:
+
+	# the height of the 320 wide picture on screen, in its pixels : 240 in 4:3
+
+	return 240 if four_three and HD_TEXTURE.on else 200
+
+
+func _set_aspect() -> void:
+
+	# remake (ENHANCED, F4) : 4:3 draws the 320x200 picture in a 320x240 area, every canvas
+	# 1.2 times taller (the global canvas transform applies to all of them), and the window
+	# takes the new height
+
+	var root := get_tree().root
+	var high := _screen_height()
+
+	if root.content_scale_size.y == high:
+		return
+
+	root.content_scale_size = Vector2i(320, high)
+	root.global_canvas_transform = Transform2D.IDENTITY.scaled(Vector2(1, high / 200.0))
+
+	if shot_path != "":
+		DisplayServer.window_set_size(Vector2i(1280, 4 * high))
+	elif root.mode == Window.MODE_WINDOWED:
+		_size_window()
 
 
 func _hd_image(path: String) -> Image:
@@ -3221,10 +3374,24 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
 
 		# remake, not keys of the game (F10 stays the original's exit) : F1 ORIGINAL or
-		# ENHANCED, F2 PC or Amiga graphics, F3 PC speaker or Amiga sound, at any moment
+		# ENHANCED, F2 PC or Amiga graphics, F3 PC speaker or Amiga sound, F4 (ENHANCED) square
+		# pixels or 4:3, F5 (ENHANCED) smooth motion, at any moment
 
 		if event.physical_keycode == KEY_F1:
 			_set_enhanced(not HD_TEXTURE.on)
+			return
+
+		if event.physical_keycode == KEY_F4:
+			if HD_TEXTURE.on:
+				four_three = not four_three
+				_set_aspect()
+
+			return
+
+		if event.physical_keycode == KEY_F5:
+			if HD_TEXTURE.on:
+				smooth = not smooth
+
 			return
 
 		if event.physical_keycode == KEY_F2:
@@ -3529,43 +3696,6 @@ func _carry_level(next: int, loop: int) -> void:
 		},
 	}
 
-
-func start_at_level(level: int) -> void:
-
-	# ENHANCED : a new game started at a level reached before, chosen on the title menu.
-	# The players as at the start of a game (score 0, 3 lives, the base gun), carried to
-	# that level as to a next level : LOADING LEVEL n, then GET READY.
-
-	_carry_level(level, 1)
-	get_tree().reload_current_scene.call_deferred()
-
-
-func _read_progress() -> void:
-
-	# ENHANCED : the furthest level reached, read once a run
-
-	if reached_level != 0:
-		return
-
-	reached_level = 1
-	var config := ConfigFile.new()
-
-	if config.load(PROGRESS_PATH) == OK:
-		reached_level = clampi(int(config.get_value("game", "reached_level", 1)), 1, 5)
-
-
-func _note_level() -> void:
-
-	# ENHANCED : a level started in play is remembered (not by the test runs)
-
-	if shot_path != "" or level_number <= reached_level:
-		return
-
-	reached_level = level_number
-	var config := ConfigFile.new()
-	config.load(PROGRESS_PATH)
-	config.set_value("game", "reached_level", reached_level)
-	config.save(PROGRESS_PATH)
 
 
 func _carry_other() -> Dictionary:
@@ -6793,7 +6923,21 @@ func _draw_map() -> void:
 		if background_line > 0:
 			map.draw_texture_rect_region(amiga_background, Rect2(0, rest, 320, background_line), Rect2(0, 0, 320, background_line))
 
-	for row in range(first_row, mini(first_row + 13, rows)):
+		# ENHANCED, smooth : the map moves by part of a scroll step, the background's line
+		# before the top shown over it
+
+		if _smoothing():
+			var start := posmod(background_line - 16, PLAY_HEIGHT)
+			var first := mini(16, PLAY_HEIGHT - start)
+			map.draw_texture_rect_region(amiga_background, Rect2(0, -16, 320, first), Rect2(0, start, 320, first))
+
+			if first < 16:
+				map.draw_texture_rect_region(amiga_background, Rect2(0, first - 16, 320, 16 - first), Rect2(0, 0, 320, 16 - first))
+
+	if _smoothing() and first_row > 0:
+		first_row -= 1
+
+	for row in range(first_row, mini(first_row + 14, rows)):
 		for column in 20:
 			_draw_cell(map, row, column)
 
@@ -6911,7 +7055,7 @@ func _draw_boss() -> void:
 		var key := "S1/%03d" % BOSS_EYE[(boss["eye"] >> 6) & 3]
 		world.draw_texture(_texture(key), Vector2(152, by + 0x42))
 
-	boss["flash"] = false
+	flash_drawn(boss)
 
 
 func _tile_masked(tile: int) -> Texture2D:
@@ -6976,7 +7120,14 @@ func _draw_world() -> void:
 
 	# code 0x3682 : draws in list order, ship, enemies, bullets and effects, newest first
 
+	# ENHANCED, smooth : each object moved by the part of its last move not yet shown
+
+	var smoothing := smooth_alpha < 1.0
+
 	if ship_visible:
+		if smoothing:
+			world.draw_set_transform(Vector2(_limited(prev_ship.x - ship_x), _limited(prev_ship.y - ship_y)))
+
 		if dying:
 			_draw_sprite("X2SPR/%03d" % SHIP_DEATH_FRAMES[death_index], ship_x, ship_y, false)
 		else:
@@ -6985,10 +7136,16 @@ func _draw_world() -> void:
 			if under_map:
 				_draw_under_map("X2SPR/%03d" % ship_frame, ship_x, ship_y)
 
-	ship_flash = false
+	if _smoothing():
+		ship_flash_later = true
+	else:
+		ship_flash = false
 
 	for flame in flames:
 		if flame["visible"]:
+			if smoothing:
+				world.draw_set_transform(_lag(flame))
+
 			_draw_sprite("X2SPR/%03d" % FLAME_FRAMES[flame["index"]][flame["frame"]], flame["x"], flame["y"], false)
 
 	# launchers, newest first : the base gun and the side shot draw nothing, the others
@@ -6997,6 +7154,9 @@ func _draw_world() -> void:
 	for launcher in launchers:
 		if not launcher["visible"]:
 			continue
+
+		if smoothing:
+			world.draw_set_transform(_lag(launcher))
 
 		match launcher["kind"]:
 			"rear":
@@ -7010,7 +7170,21 @@ func _draw_world() -> void:
 		if enemy["dead"]:
 			continue
 
+		if smoothing:
+			if enemy.get("kind", "") == "wall":
+				world.draw_set_transform(_scroll_lag())
+			else:
+				world.draw_set_transform(_lag(enemy))
+
 		if enemy.get("kind", "") == "boss":
+			if smoothing:
+				var lag := _scroll_lag()
+
+				if boss.has("py"):
+					lag.y += _limited(boss["py"] - boss["y"])
+
+				world.draw_set_transform(lag)
+
 			_draw_boss()
 			continue
 
@@ -7037,7 +7211,7 @@ func _draw_world() -> void:
 			if enemy["shown"]:
 				_draw_sprite(enemy["key"], enemy["x"], enemy["y"], enemy["flash"])
 
-			enemy["flash"] = false
+			flash_drawn(enemy)
 			continue
 
 		if enemy.get("kind", "") == "wall":
@@ -7053,15 +7227,40 @@ func _draw_world() -> void:
 					if first[i] != 0:
 						world.draw_texture(_tile_flash(first[i]), Vector2(enemy["x"] + (i & 1) * 16, sy + (i >> 1) * 16))
 
-			enemy["flash"] = false
+			flash_drawn(enemy)
 			continue
 
-		_draw_sprite(enemy["key"], enemy["x"], enemy["y"], enemy["flash"])
-		enemy["flash"] = false
+		# ENHANCED : a part that follows the first one (code 0x37ca, level 1 type 7's tail,
+		# level 4 type 1) drawn where the first one is now, so it stays on the body. The
+		# original takes its place a tick late (the part is updated first), and the tail
+		# floats off the capsule by a tick's move. Its box stays the original's.
+
+		var at := Vector2i(enemy["x"], enemy["y"])
+		var lead = enemy.get("head")
+
+		if HD_TEXTURE.on and enemy.get("update", "") == "0x37ca" and lead != null and not lead["dead"]:
+			at = Vector2i(lead["x"], lead["y"])
+
+			if smoothing:
+				world.draw_set_transform(_lag(lead))
+
+		_draw_sprite(enemy["key"], at.x, at.y, enemy["flash"])
+		flash_drawn(enemy)
 
 	for item in effects:
 		if item["dead"]:
 			continue
+
+		if smoothing:
+			match item["kind"]:
+				"enemy_bullet":
+					world.draw_set_transform(_lag(item, true, true))
+				"flame":
+					world.draw_set_transform(_lag(item, true, false))
+				"gun":
+					world.draw_set_transform(_scroll_lag())
+				_:
+					world.draw_set_transform(_lag(item))
 
 		match item["kind"]:
 			"gun":
@@ -7106,11 +7305,17 @@ func _draw_world() -> void:
 
 	# code 0x36d0 : the list ds:0x90e2 is drawn last (level 3's holes)
 
+	if smoothing:
+		world.draw_set_transform(_scroll_lag())
+
 	if level3 != null:
 		level3.draw_overlay()
 
 	if level4 != null:
 		level4.draw_tile_objects()
+
+	if smoothing:
+		world.draw_set_transform(Vector2.ZERO)
 
 
 func _draw_beam(beam: Dictionary) -> void:
@@ -7187,7 +7392,8 @@ func _draw_overlay() -> void:
 func _draw_stars() -> void:
 	for i in STAR_COUNT:
 		var star: Dictionary = stars[i]
-		star_layer.draw_rect(Rect2(star["x"], star["y"], 1, 1), STAR_COLOURS[i / 16])
+		var lag := _lag(star) if smooth_alpha < 1.0 else Vector2.ZERO
+		star_layer.draw_rect(Rect2(Vector2(star["x"], star["y"]) + lag, Vector2(1, 1)), STAR_COLOURS[i / 16])
 
 
 func _draw_hud() -> void:

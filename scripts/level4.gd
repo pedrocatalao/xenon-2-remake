@@ -1189,7 +1189,7 @@ func draw_enemy(enemy: Dictionary) -> void:
 		_:
 			main._draw_sprite(enemy["key"], enemy["x"], enemy["y"], enemy["flash"])
 
-	enemy["flash"] = false
+	main.flash_drawn(enemy)
 
 
 func _draw_end(part: Dictionary) -> void:

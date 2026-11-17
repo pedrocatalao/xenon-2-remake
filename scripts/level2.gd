@@ -556,7 +556,7 @@ func _draw_target(target: Dictionary) -> void:
 	var x: int = target["column"] * 16 + flash[0][0]
 	var y: int = target["row"] * 16 - main.scroll + flash[0][1]
 	main._draw_grid(flash[1], x, y, true)
-	target["flash"] = false
+	main.flash_drawn(target)
 
 
 # ---------------------------------------------------------------- the guardian
@@ -717,7 +717,7 @@ func _draw_guardian(g: Dictionary) -> void:
 	if main.scroll < 0x160:
 		main._draw_grid(g["body"], 112, g["world_y"] - main.scroll, g["flash"])
 
-	g["flash"] = false
+	main.flash_drawn(g)
 
 
 func _spawn_hatchling(sy: int) -> void:
@@ -1298,15 +1298,15 @@ func draw_enemy(enemy: Dictionary) -> void:
 			if enemy["flash"]:
 				main.world.draw_texture(main._tile_flash(enemy["first"][0]), Vector2(enemy["x"], enemy["world_y"] - main.scroll))
 
-			enemy["flash"] = false
+			main.flash_drawn(enemy)
 		"l2_snake":
 			if enemy["shown"]:
 				main._draw_sprite(enemy["key"], enemy["x"], enemy["y"], enemy["flash"])
 
-			enemy["flash"] = false
+			main.flash_drawn(enemy)
 		_:
 			main._draw_sprite(enemy["key"], enemy["x"], enemy["y"], enemy["flash"])
-			enemy["flash"] = false
+			main.flash_drawn(enemy)
 
 
 func draw_effect(item: Dictionary) -> void:

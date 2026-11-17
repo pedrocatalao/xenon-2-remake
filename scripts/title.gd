@@ -257,13 +257,6 @@ func _run() -> void:
 
 	main.start_players(item + 1)
 
-	# ENHANCED : a game started at a level reached before (main.start_at_level loads it)
-
-	if main.HD_TEXTURE.on and not main.test_start and main.start_level > 1 and main.start_level <= main.reached_level:
-		running = false
-		main.start_at_level(main.start_level)
-		return
-
 	# 0x5cd4 : LOADING LEVEL 1 for one frame (stars renewed first, 0x5935)
 
 	_new_stars()
@@ -395,9 +388,6 @@ func _menu() -> void:
 
 	credits = 3
 
-	# ENHANCED : START AT LEVEL shows the furthest level reached first
-
-	main.start_level = maxi(main.reached_level, 1)
 	_new_stars()
 	await _show_once(0xc, SELECT)
 	main.fire_event = false
@@ -426,29 +416,6 @@ func _menu() -> void:
 
 		_text_at(8, 184, "K KEYS", medium, MEDIUM_ROWS)
 
-		# ENHANCED : once a level after the first was reached, the level a new game starts
-		# at, between SELECT and the first line, changed with left and right
-
-		var choose_level: bool = main.HD_TEXTURE.on and main.reached_level > 1 and not main.test_start
-		main.start_level = clampi(main.start_level, 1, maxi(main.reached_level, 1))
-
-		if choose_level:
-
-			# the arrows (the large font's, the medium one has none) show which way the number
-			# can still change with left and right
-
-			# START AT LEVEL, a space, then arrow, number, arrow side by side, all centred
-
-			var x0 := (320 - 16 * 18) / 2
-			_text_at(x0, 0x28, "START AT LEVEL", medium, MEDIUM_ROWS)
-			_text_at(x0 + 16 * 16, 0x28, str(main.start_level), medium, MEDIUM_ROWS)
-
-			if main.start_level > 1:
-				_text_at(x0 + 16 * 15 - 6, 0x28 - 4, "<", large, LARGE_ROWS)
-
-			if main.start_level < main.reached_level:
-				_text_at(x0 + 16 * 17 + 6, 0x28 - 4, ">", large, LARGE_ROWS)
-
 		_stars()
 		await _frame()
 
@@ -463,18 +430,8 @@ func _menu() -> void:
 		if main.held_down:
 			dirs |= 2
 
-		dirs |= _sideways()
 		var pressed := dirs & ~held
 		held = dirs
-
-		if choose_level and pressed & 12:
-			var level: int = main.start_level + (1 if pressed & 8 else -1)
-
-			if level >= 1 and level <= main.reached_level:
-				main._menu_sound(8, 0xc)
-				main.start_level = level
-
-			continue
 
 		if main.any_key and main.last_key == KEY_K:
 			main.any_key = false

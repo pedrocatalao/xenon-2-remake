@@ -14,13 +14,13 @@ This project brings it back with love and respect: a faithful remake for modern 
 
 ## Download
 
-Latest release: **[1.0.5](https://github.com/vpapanik/xenon-2-remake/releases/latest)**
+Latest release: **[1.0.6](https://github.com/vpapanik/xenon-2-remake/releases/latest)**
 
 | Platform | File |
 |---|---|
-| Windows (x86_64) | [Xenon2Remake-1.0.5-windows-x86_64.zip](https://github.com/vpapanik/xenon-2-remake/releases/download/v1.0.5/Xenon2Remake-1.0.5-windows-x86_64.zip) : unzip and run `Xenon2Remake.exe` |
-| Linux (x86_64) | [Xenon2Remake-1.0.5-linux-x86_64.tar.gz](https://github.com/vpapanik/xenon-2-remake/releases/download/v1.0.5/Xenon2Remake-1.0.5-linux-x86_64.tar.gz) : extract and run `./Xenon2Remake.x86_64` |
-| Web | [Xenon2Remake-1.0.5-web.zip](https://github.com/vpapanik/xenon-2-remake/releases/download/v1.0.5/Xenon2Remake-1.0.5-web.zip) : unzip and serve the folder with any web server, then open it in the browser |
+| Windows (x86_64) | [Xenon2Remake-1.0.6-windows-x86_64.zip](https://github.com/vpapanik/xenon-2-remake/releases/download/v1.0.6/Xenon2Remake-1.0.6-windows-x86_64.zip) : unzip and run `Xenon2Remake.exe` |
+| Linux (x86_64) | [Xenon2Remake-1.0.6-linux-x86_64.tar.gz](https://github.com/vpapanik/xenon-2-remake/releases/download/v1.0.6/Xenon2Remake-1.0.6-linux-x86_64.tar.gz) : extract and run `./Xenon2Remake.x86_64` |
+| Web | [Xenon2Remake-1.0.6-web.zip](https://github.com/vpapanik/xenon-2-remake/releases/download/v1.0.6/Xenon2Remake-1.0.6-web.zip) : unzip and serve the folder with any web server, then open it in the browser |
 
 ## The game
 
@@ -62,8 +62,10 @@ ENHANCED also smooths a few small rough edges of the original:
 - the CONTINUE countdown counts real seconds, 10 in all instead of about 4
 - the texts of the title screen are centred
 - the logo zooms in smoothly on the title screen
+- the tails of the level 1 capsules stay on their bodies, instead of floating a frame behind them
 - after a weapon is sold in the shop, the side weapons left move next to the ship at once, instead of hanging in the air until the next life or level
-- the furthest level you reached is remembered, and the title menu can start a new game there: START AT LEVEL, changed with left and right.
+- **F4** shows the picture as on a 4:3 PC (VGA) screen of the time, every pixel 20% taller, or with square pixels (the default, close to a PAL Amiga)
+- smooth motion: the game still moves everything about 18 times a second, but the picture is drawn at every frame of your screen, with the scroll, the ship, the enemies, the shots and the stars between their last two positions. The game itself plays exactly the same. **F5** turns it off and on.
 
 ## Building
 
@@ -81,6 +83,8 @@ Open the folder in **[Godot 4.7.2](https://godotengine.org/download/)** (standar
 | F1 | ORIGINAL or ENHANCED |
 | F2 | Amiga or PC graphics |
 | F3 | Amiga or PC sound |
+| F4 (ENHANCED) | square pixels or the 4:3 shape of a PC screen of the time |
+| F5 (ENHANCED) | smooth motion off or on |
 | F10 | quit |
 | K (on the title menu) | choose your own keys |
 
