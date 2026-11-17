@@ -36,6 +36,7 @@ jobs:
         run: |
           for f in index.html index.js index.wasm index.pck; do test -s "build/web/$f" || { echo "missing $f"; exit 1; }; done
           grep -q x2touch build/web/index.html  # the touch controls from the preset's head include
+          grep -q "og:image" build/web/index.html  # the link preview lines, also from the head include
 
       - name: Package
         run: cd build/web && zip -r "../../Xenon2Remake-${{ steps.godot.outputs.version }}-web.zip" .
@@ -45,6 +46,32 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh release upload "${{ github.event.release.tag_name }}" "Xenon2Remake-${{ steps.godot.outputs.version }}-web.zip" --clobber
+
+      # The game played online (https://vpapanik.github.io/xenon-2-remake/) is the gh-pages
+      # branch : on a release (not a pre-release) the new web build goes there, over the old
+      # one. The branch's own files (social.jpg, .nojekyll) stay. The link preview lines come
+      # with the build (the preset's head include).
+      - name: Publish on GitHub Pages
+        if: github.event_name == 'release' && !github.event.release.prerelease
+        env:
+          VERSION: ${{ steps.godot.outputs.version }}
+        run: |
+          git fetch --depth 1 origin gh-pages
+          git worktree add --detach "$RUNNER_TEMP/pages" FETCH_HEAD
+          cp -f build/web/* "$RUNNER_TEMP/pages/"
+          cd "$RUNNER_TEMP/pages"
+          grep -q "og:image" index.html
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+
+          if git diff --cached --quiet; then
+            echo "gh-pages already has this build"
+            exit 0
+          fi
+
+          git commit -q -m "Web build of Xenon 2 remake $VERSION"
+          git push origin HEAD:gh-pages
 
       - uses: actions/upload-artifact@v4
         with:
